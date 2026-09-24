@@ -1,5 +1,4 @@
 #include <iostream>
-#include <algorithm>
 using namespace std;
 
 class Static_Array_Number
@@ -649,14 +648,19 @@ public:
 int main() {
 
     // ============================================
-    // Create Array Object
+    // Welcome
+    // ============================================
+
+    cout << "============================================" << endl;
+    cout << "     Welcome To Array Application" << endl;
+    cout << "============================================" << endl;
+
+
+    // ============================================
+    // Create Array
     // ============================================
 
     int size;
-
-    cout << "============================================" << endl;
-    cout << "-> Hello The Application Array is Running <-" << endl;
-    cout << "============================================" << endl;
 
     cout << "\nEnter Array Capacity: ";
     cin >> size;
@@ -668,376 +672,712 @@ int main() {
     // Main Menu
     // ============================================
 
-    int choice;
+    int mainChoice;
 
     do {
 
         cout << "\n\n============================================" << endl;
-        cout << "              ARRAY MENU" << endl;
+        cout << "                 MAIN MENU" << endl;
         cout << "============================================" << endl;
 
-        cout << "1.  Append Number" << endl;
-        cout << "2.  Insert Number at Index" << endl;
-        cout << "3.  Insert Sorted" << endl;
-        cout << "4.  Delete Number by Index" << endl;
-        cout << "5.  Linear Search" << endl;
-        cout << "6.  Binary Search" << endl;
-        cout << "7.  Get Number by Index" << endl;
-        cout << "8.  Set Number by Index" << endl;
-        cout << "9.  Find Maximum Number" << endl;
-        cout << "10. Find Minimum Number" << endl;
-        cout << "11. Calculate Sum" << endl;
-        cout << "12. Calculate Average" << endl;
-        cout << "13. Reverse Array" << endl;
-        cout << "14. Check if Array is Sorted" << endl;
-        cout << "15. Rearrange Negative / Positive" << endl;
-        cout << "16. Display Array" << endl;
-        cout << "17. Get Array Capacity" << endl;
-        cout << "18. Get Array Length" << endl;
-        cout << "19. Exit" << endl;
+        cout << "1. Basic Operations" << endl;
+        cout << "2. Search Operations" << endl;
+        cout << "3. Mathematical Operations" << endl;
+        cout << "4. Array Operations" << endl;
+        cout << "5. Set Operations" << endl;
+        cout << "6. Array Information" << endl;
+        cout << "7. Exit" << endl;
 
         cout << "============================================" << endl;
         cout << "Enter your choice: ";
-        cin >> choice;
+        cin >> mainChoice;
 
 
-        // ============================================
-        // Choice 1 -> Append
-        // ============================================
+        // ==================================================
+        // 1. BASIC OPERATIONS
+        // ==================================================
 
-        if (choice == 1) {
+        if (mainChoice == 1) {
 
-            int value;
+            int choice;
 
-            cout << "\nEnter number: ";
-            cin >> value;
+            do {
 
-            if (arr.append(value)) {
-                cout << "Number added successfully." << endl;
-            }
-            else {
-                cout << "Array is full!" << endl;
-            }
+                cout << "\n\n============================================" << endl;
+                cout << "             BASIC OPERATIONS" << endl;
+                cout << "============================================" << endl;
+
+                cout << "1. Append Number" << endl;
+                cout << "2. Insert Number" << endl;
+                cout << "3. Insert Sorted" << endl;
+                cout << "4. Delete Number" << endl;
+                cout << "5. Get Number" << endl;
+                cout << "6. Set Number" << endl;
+                cout << "7. Back To Main Menu" << endl;
+
+                cout << "============================================" << endl;
+                cout << "Enter your choice: ";
+                cin >> choice;
+
+
+                // Append
+                if (choice == 1) {
+
+                    int value;
+
+                    cout << "\nEnter number: ";
+                    cin >> value;
+
+                    if (arr.append(value)) {
+                        cout << "Number added successfully." << endl;
+                    }
+                    else {
+                        cout << "Array is full!" << endl;
+                    }
+                }
+
+
+                // Insert
+                else if (choice == 2) {
+
+                    int index;
+                    int value;
+
+                    cout << "\nEnter index: ";
+                    cin >> index;
+
+                    cout << "Enter number: ";
+                    cin >> value;
+
+                    if (arr.insert(index, value)) {
+                        cout << "Number inserted successfully." << endl;
+                    }
+                    else {
+                        cout << "Invalid index or Array is full!" << endl;
+                    }
+                }
+
+
+                // Insert Sorted
+                else if (choice == 3) {
+
+                    int value;
+
+                    cout << "\nEnter number: ";
+                    cin >> value;
+
+                    if (arr.insert_sorted(value)) {
+                        cout << "Number inserted successfully." << endl;
+                    }
+                    else {
+                        cout << "Array is full!" << endl;
+                    }
+                }
+
+
+                // Delete
+                else if (choice == 4) {
+
+                    int index;
+
+                    cout << "\nEnter index: ";
+                    cin >> index;
+
+                    int deletedValue = arr.delete_index(index);
+
+                    if (deletedValue != -1) {
+                        cout << "Deleted number: "
+                             << deletedValue << endl;
+                    }
+                    else {
+                        cout << "Invalid index!" << endl;
+                    }
+                }
+
+
+                // Get
+                else if (choice == 5) {
+
+                    int index;
+                    int value;
+
+                    cout << "\nEnter index: ";
+                    cin >> index;
+
+                    if (arr.get(index, value)) {
+                        cout << "Value = " << value << endl;
+                    }
+                    else {
+                        cout << "Invalid index!" << endl;
+                    }
+                }
+
+
+                // Set
+                else if (choice == 6) {
+
+                    int index;
+                    int value;
+
+                    cout << "\nEnter index: ";
+                    cin >> index;
+
+                    cout << "Enter new value: ";
+                    cin >> value;
+
+                    if (arr.set(index, value)) {
+                        cout << "Value updated successfully." << endl;
+                    }
+                    else {
+                        cout << "Invalid index!" << endl;
+                    }
+                }
+
+
+                else if (choice == 7) {
+
+                    cout << "\nReturning to Main Menu..." << endl;
+
+                }
+
+                else {
+
+                    cout << "\nInvalid choice!" << endl;
+
+                }
+
+            } while (choice != 7);
         }
 
 
-        // ============================================
-        // Choice 2 -> Insert
-        // ============================================
+        // ==================================================
+        // 2. SEARCH OPERATIONS
+        // ==================================================
 
-        else if (choice == 2) {
+        else if (mainChoice == 2) {
 
-            int index;
-            int value;
+            int choice;
 
-            cout << "\nEnter index: ";
-            cin >> index;
+            do {
 
-            cout << "Enter number: ";
-            cin >> value;
+                cout << "\n\n============================================" << endl;
+                cout << "              SEARCH OPERATIONS" << endl;
+                cout << "============================================" << endl;
 
-            if (arr.insert(index, value)) {
-                cout << "Number inserted successfully." << endl;
-            }
-            else {
-                cout << "Invalid index or Array is full!" << endl;
-            }
+                cout << "1. Linear Search" << endl;
+                cout << "2. Binary Search" << endl;
+                cout << "3. Back To Main Menu" << endl;
+
+                cout << "============================================" << endl;
+                cout << "Enter your choice: ";
+                cin >> choice;
+
+
+                // Linear Search
+                if (choice == 1) {
+
+                    int key;
+
+                    cout << "\nEnter number to search: ";
+                    cin >> key;
+
+                    int index = arr.linear_search(key);
+
+                    if (index != -1) {
+                        cout << "Number found at index: "
+                             << index << endl;
+                    }
+                    else {
+                        cout << "Number not found." << endl;
+                    }
+                }
+
+
+                // Binary Search
+                else if (choice == 2) {
+
+                    int key;
+
+                    cout << "\nEnter number to search: ";
+                    cin >> key;
+
+                    cout << "\nNOTE: Binary Search requires "
+                         << "a sorted array." << endl;
+
+                    int index = arr.binary_search(key);
+
+                    if (index != -1) {
+                        cout << "Number found at index: "
+                             << index << endl;
+                    }
+                    else {
+                        cout << "Number not found." << endl;
+                    }
+                }
+
+
+                else if (choice == 3) {
+
+                    cout << "\nReturning to Main Menu..." << endl;
+
+                }
+
+                else {
+
+                    cout << "\nInvalid choice!" << endl;
+
+                }
+
+            } while (choice != 3);
         }
 
 
-        // ============================================
-        // Choice 3 -> Insert Sorted
-        // ============================================
+        // ==================================================
+        // 3. MATHEMATICAL OPERATIONS
+        // ==================================================
 
-        else if (choice == 3) {
+        else if (mainChoice == 3) {
 
-            int value;
+            int choice;
 
-            cout << "\nEnter number: ";
-            cin >> value;
+            do {
 
-            if (arr.insert_sorted(value)) {
-                cout << "Number inserted in sorted position." << endl;
-            }
-            else {
-                cout << "Array is full!" << endl;
-            }
+                cout << "\n\n============================================" << endl;
+                cout << "           MATHEMATICAL OPERATIONS" << endl;
+                cout << "============================================" << endl;
+
+                cout << "1. Maximum" << endl;
+                cout << "2. Minimum" << endl;
+                cout << "3. Sum" << endl;
+                cout << "4. Average" << endl;
+                cout << "5. Back To Main Menu" << endl;
+
+                cout << "============================================" << endl;
+                cout << "Enter your choice: ";
+                cin >> choice;
+
+
+                // Maximum
+                if (choice == 1) {
+
+                    if (arr.get_length() == 0) {
+                        cout << "\nArray is empty!" << endl;
+                    }
+                    else {
+                        cout << "\nMaximum = "
+                             << arr.max() << endl;
+                    }
+                }
+
+
+                // Minimum
+                else if (choice == 2) {
+
+                    if (arr.get_length() == 0) {
+                        cout << "\nArray is empty!" << endl;
+                    }
+                    else {
+                        cout << "\nMinimum = "
+                             << arr.min() << endl;
+                    }
+                }
+
+
+                // Sum
+                else if (choice == 3) {
+
+                    cout << "\nSum = "
+                         << arr.sum() << endl;
+                }
+
+
+                // Average
+                else if (choice == 4) {
+
+                    if (arr.get_length() == 0) {
+                        cout << "\nArray is empty!" << endl;
+                    }
+                    else {
+                        cout << "\nAverage = "
+                             << arr.average() << endl;
+                    }
+                }
+
+
+                else if (choice == 5) {
+
+                    cout << "\nReturning to Main Menu..." << endl;
+
+                }
+
+                else {
+
+                    cout << "\nInvalid choice!" << endl;
+
+                }
+
+            } while (choice != 5);
         }
 
 
-        // ============================================
-        // Choice 4 -> Delete
-        // ============================================
+        // ==================================================
+        // 4. ARRAY OPERATIONS
+        // ==================================================
 
-        else if (choice == 4) {
+        else if (mainChoice == 4) {
 
-            int index;
+            int choice;
 
-            cout << "\nEnter index to delete: ";
-            cin >> index;
+            do {
 
-            int deletedValue = arr.delete_index(index);
+                cout << "\n\n============================================" << endl;
+                cout << "               ARRAY OPERATIONS" << endl;
+                cout << "============================================" << endl;
 
-            if (deletedValue != -1) {
-                cout << "Deleted number: " << deletedValue << endl;
-            }
-            else {
-                cout << "Invalid index!" << endl;
-            }
+                cout << "1. Reverse Array" << endl;
+                cout << "2. Check If Sorted" << endl;
+                cout << "3. Rearrange Negative / Positive" << endl;
+                cout << "4. Back To Main Menu" << endl;
+
+                cout << "============================================" << endl;
+                cout << "Enter your choice: ";
+                cin >> choice;
+
+
+                // Reverse
+                if (choice == 1) {
+
+                    arr.reverse();
+
+                    cout << "\nArray reversed successfully." << endl;
+
+                    cout << "Array: ";
+                    arr.display();
+                }
+
+
+                // Is Sorted
+                else if (choice == 2) {
+
+                    if (arr.is_sorted()) {
+                        cout << "\nArray is sorted." << endl;
+                    }
+                    else {
+                        cout << "\nArray is NOT sorted." << endl;
+                    }
+                }
+
+
+                // Rearrange
+                else if (choice == 3) {
+
+                    arr.rearrange();
+
+                    cout << "\nArray rearranged successfully." << endl;
+
+                    cout << "Array: ";
+                    arr.display();
+                }
+
+
+                else if (choice == 4) {
+
+                    cout << "\nReturning to Main Menu..." << endl;
+
+                }
+
+                else {
+
+                    cout << "\nInvalid choice!" << endl;
+
+                }
+
+            } while (choice != 4);
         }
 
 
-        // ============================================
-        // Choice 5 -> Linear Search
-        // ============================================
+        // ==================================================
+        // 5. SET OPERATIONS
+        // ==================================================
 
-        else if (choice == 5) {
+        else if (mainChoice == 5) {
 
-            int key;
+            int choice;
 
-            cout << "\nEnter number to search: ";
-            cin >> key;
+            do {
 
-            int index = arr.linear_search(key);
+                cout << "\n\n============================================" << endl;
+                cout << "                SET OPERATIONS" << endl;
+                cout << "============================================" << endl;
 
-            if (index != -1) {
-                cout << "Number found at index: " << index << endl;
-            }
-            else {
-                cout << "Number not found." << endl;
-            }
+                cout << "1. Merge Arrays" << endl;
+                cout << "2. Union Arrays" << endl;
+                cout << "3. Intersection Arrays" << endl;
+                cout << "4. Difference Arrays" << endl;
+                cout << "5. Back To Main Menu" << endl;
+
+                cout << "============================================" << endl;
+                cout << "Enter your choice: ";
+                cin >> choice;
+
+
+                // ------------------------------------------
+                // Merge
+                // ------------------------------------------
+
+                if (choice == 1) {
+
+                    int size2;
+
+                    cout << "\nEnter second array capacity: ";
+                    cin >> size2;
+
+                    Static_Array_Number arr2(size2, 0, nullptr);
+
+                    int n;
+
+                    cout << "How many numbers do you want to add? ";
+                    cin >> n;
+
+                    for (int i = 0; i < n; i++) {
+
+                        int value;
+
+                        cout << "Enter number " << i + 1 << ": ";
+                        cin >> value;
+
+                        arr2.append(value);
+                    }
+
+                    arr.merge(arr2);
+
+                    cout << "\nArrays merged successfully." << endl;
+
+                    cout << "Result: ";
+                    arr.display();
+                }
+
+
+                // ------------------------------------------
+                // Union
+                // ------------------------------------------
+
+                else if (choice == 2) {
+
+                    int size2;
+
+                    cout << "\nEnter second array capacity: ";
+                    cin >> size2;
+
+                    Static_Array_Number arr2(size2, 0, nullptr);
+
+                    int n;
+
+                    cout << "How many numbers do you want to add? ";
+                    cin >> n;
+
+                    for (int i = 0; i < n; i++) {
+
+                        int value;
+
+                        cout << "Enter number " << i + 1 << ": ";
+                        cin >> value;
+
+                        arr2.append(value);
+                    }
+
+                    arr.union_array(arr2);
+
+                    cout << "\nUnion completed successfully." << endl;
+
+                    cout << "Result: ";
+                    arr.display();
+                }
+
+
+                // ------------------------------------------
+                // Intersection
+                // ------------------------------------------
+
+                else if (choice == 3) {
+
+                    int size2;
+
+                    cout << "\nEnter second array capacity: ";
+                    cin >> size2;
+
+                    Static_Array_Number arr2(size2, 0, nullptr);
+
+                    int n;
+
+                    cout << "How many numbers do you want to add? ";
+                    cin >> n;
+
+                    for (int i = 0; i < n; i++) {
+
+                        int value;
+
+                        cout << "Enter number " << i + 1 << ": ";
+                        cin >> value;
+
+                        arr2.append(value);
+                    }
+
+                    arr.intersection(arr2);
+
+                    cout << "\nIntersection completed successfully." << endl;
+
+                    cout << "Result: ";
+                    arr.display();
+                }
+
+
+                // ------------------------------------------
+                // Difference
+                // ------------------------------------------
+
+                else if (choice == 4) {
+
+                    int size2;
+
+                    cout << "\nEnter second array capacity: ";
+                    cin >> size2;
+
+                    Static_Array_Number arr2(size2, 0, nullptr);
+
+                    int n;
+
+                    cout << "How many numbers do you want to add? ";
+                    cin >> n;
+
+                    for (int i = 0; i < n; i++) {
+
+                        int value;
+
+                        cout << "Enter number " << i + 1 << ": ";
+                        cin >> value;
+
+                        arr2.append(value);
+                    }
+
+                    arr.difference(arr2);
+
+                    cout << "\nDifference completed successfully." << endl;
+
+                    cout << "Result: ";
+                    arr.display();
+                }
+
+
+                else if (choice == 5) {
+
+                    cout << "\nReturning to Main Menu..." << endl;
+
+                }
+
+                else {
+
+                    cout << "\nInvalid choice!" << endl;
+
+                }
+
+            } while (choice != 5);
         }
 
 
-        // ============================================
-        // Choice 6 -> Binary Search
-        // ============================================
+        // ==================================================
+        // 6. ARRAY INFORMATION
+        // ==================================================
 
-        else if (choice == 6) {
+        else if (mainChoice == 6) {
 
-            int key;
+            int choice;
 
-            cout << "\nEnter number to search: ";
-            cin >> key;
+            do {
 
-            int index = arr.binary_search(key);
+                cout << "\n\n============================================" << endl;
+                cout << "             ARRAY INFORMATION" << endl;
+                cout << "============================================" << endl;
 
-            if (index != -1) {
-                cout << "Number found at index: " << index << endl;
-            }
-            else {
-                cout << "Number not found." << endl;
-            }
+                cout << "1. Display Array" << endl;
+                cout << "2. Get Capacity" << endl;
+                cout << "3. Get Length" << endl;
+                cout << "4. Back To Main Menu" << endl;
+
+                cout << "============================================" << endl;
+                cout << "Enter your choice: ";
+                cin >> choice;
+
+
+                // Display
+                if (choice == 1) {
+
+                    cout << "\nArray: ";
+
+                    if (arr.get_length() == 0) {
+                        cout << "Array is empty!" << endl;
+                    }
+                    else {
+                        arr.display();
+                    }
+                }
+
+
+                // Capacity
+                else if (choice == 2) {
+
+                    cout << "\nArray Capacity = "
+                         << arr.get_size() << endl;
+                }
+
+
+                // Length
+                else if (choice == 3) {
+
+                    cout << "\nArray Length = "
+                         << arr.get_length() << endl;
+                }
+
+
+                else if (choice == 4) {
+
+                    cout << "\nReturning to Main Menu..." << endl;
+
+                }
+
+                else {
+
+                    cout << "\nInvalid choice!" << endl;
+
+                }
+
+            } while (choice != 4);
         }
 
 
-        // ============================================
-        // Choice 7 -> Get
-        // ============================================
+        // ==================================================
+        // 7. EXIT
+        // ==================================================
 
-        else if (choice == 7) {
-
-            int index;
-            int value;
-
-            cout << "\nEnter index: ";
-            cin >> index;
-
-            if (arr.get(index, value)) {
-                cout << "Value at index " << index
-                     << " = " << value << endl;
-            }
-            else {
-                cout << "Invalid index!" << endl;
-            }
-        }
-
-
-        // ============================================
-        // Choice 8 -> Set
-        // ============================================
-
-        else if (choice == 8) {
-
-            int index;
-            int value;
-
-            cout << "\nEnter index: ";
-            cin >> index;
-
-            cout << "Enter new value: ";
-            cin >> value;
-
-            if (arr.set(index, value)) {
-                cout << "Value updated successfully." << endl;
-            }
-            else {
-                cout << "Invalid index!" << endl;
-            }
-        }
-
-
-        // ============================================
-        // Choice 9 -> Maximum
-        // ============================================
-
-        else if (choice == 9) {
-
-            if (arr.get_length() == 0) {
-                cout << "\nArray is empty!" << endl;
-            }
-            else {
-                cout << "\nMaximum = " << arr.max() << endl;
-            }
-        }
-
-
-        // ============================================
-        // Choice 10 -> Minimum
-        // ============================================
-
-        else if (choice == 10) {
-
-            if (arr.get_length() == 0) {
-                cout << "\nArray is empty!" << endl;
-            }
-            else {
-                cout << "\nMinimum = " << arr.min() << endl;
-            }
-        }
-
-
-        // ============================================
-        // Choice 11 -> Sum
-        // ============================================
-
-        else if (choice == 11) {
-
-            cout << "\nSum = " << arr.sum() << endl;
-        }
-
-
-        // ============================================
-        // Choice 12 -> Average
-        // ============================================
-
-        else if (choice == 12) {
-
-            if (arr.get_length() == 0) {
-                cout << "\nArray is empty!" << endl;
-            }
-            else {
-                cout << "\nAverage = " << arr.average() << endl;
-            }
-        }
-
-
-        // ============================================
-        // Choice 13 -> Reverse
-        // ============================================
-
-        else if (choice == 13) {
-
-            arr.reverse();
-
-            cout << "\nArray reversed successfully." << endl;
-
-            cout << "Array: ";
-            arr.display();
-        }
-
-
-        // ============================================
-        // Choice 14 -> Is Sorted
-        // ============================================
-
-        else if (choice == 14) {
-
-            if (arr.is_sorted()) {
-                cout << "\nArray is sorted." << endl;
-            }
-            else {
-                cout << "\nArray is NOT sorted." << endl;
-            }
-        }
-
-
-        // ============================================
-        // Choice 15 -> Rearrange
-        // ============================================
-
-        else if (choice == 15) {
-
-            arr.rearrange();
-
-            cout << "\nArray rearranged successfully." << endl;
-
-            cout << "Array: ";
-            arr.display();
-        }
-
-
-        // ============================================
-        // Choice 16 -> Display
-        // ============================================
-
-        else if (choice == 16) {
-
-            cout << "\nArray: ";
-
-            if (arr.get_length() == 0) {
-                cout << "Array is empty!" << endl;
-            }
-            else {
-                arr.display();
-            }
-        }
-
-
-        // ============================================
-        // Choice 17 -> Get Size
-        // ============================================
-
-        else if (choice == 17) {
-
-            cout << "\nArray Capacity = "
-                 << arr.get_size() << endl;
-        }
-
-
-        // ============================================
-        // Choice 18 -> Get Length
-        // ============================================
-
-        else if (choice == 18) {
-
-            cout << "\nArray Length = "
-                 << arr.get_length() << endl;
-        }
-
-
-        // ============================================
-        // Choice 19 -> Exit
-        // ============================================
-
-        else if (choice == 19) {
+        else if (mainChoice == 7) {
 
             cout << "\n============================================" << endl;
-            cout << "       Thank you for using Array App!" << endl;
+            cout << "      Thank You For Using Array App!" << endl;
             cout << "============================================" << endl;
         }
 
 
-        // ============================================
-        // Invalid Choice
-        // ============================================
+        // ==================================================
+        // Invalid Main Choice
+        // ==================================================
 
         else {
 
-            cout << "\nInvalid choice! Please choose from 1 to 19." << endl;
+            cout << "\nInvalid choice!" << endl;
+
         }
 
-    } while (choice != 19);
+    } while (mainChoice != 7);
 
 
     return 0;
