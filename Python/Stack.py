@@ -1,36 +1,24 @@
-from queue import LifoQueue as Stack
+from queue import LifoQueue
 
 
-print('''
-===================
-Stack Implemenation
-===================
-''')
+def main() -> None:
+    stack = LifoQueue()
 
-# Initialization
-stack = Stack()
+    for item in (False, "Stacking", "Nice", 4444, 0.99):
+        stack.put(item)
 
-print(type(stack)) # queue.LifoQueue
-
-# Insertion (Push)
-stack.put(False)
-stack.put('Stacking')
-stack.put('Nice')
-stack.put(4444)
-stack.put(0.99)
-
-# Check Size
-print(f'\nStack size: {stack.qsize()}') # 5
-
-# Pop Item From Queue (Pop)
-print(f'\nElement "{stack.get()}" has been removed') # 0.99
-print(f'Element "{stack.get()}" has been removed') # 4444
-
-# Empty Check
-print(f'\nStack empty check: {stack.empty()}') # False
-
-# Pop Sequentially
-print('\nDequeue in progress:')
-while stack.empty() == False:
+    print("\nStack Implementation")
+    print(f"Type: {type(stack)}")
+    print(f"Stack size: {stack.qsize()}\n")
     print(f'Element "{stack.get()}" has been removed')
-print(f'Stack Size {stack.qsize()}')
+    print(f'Element "{stack.get()}" has been removed')
+    print(f"Stack empty check: {stack.empty()}")
+
+    print("\nStack pop:")
+    while not stack.empty():
+        print(f'Element "{stack.get()}" has been removed')
+    print(f"Stack size: {stack.qsize()}")
+
+
+if __name__ == "__main__":
+    main()
