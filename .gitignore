@@ -1,0 +1,21 @@
+# C++ build artifacts
+*.exe
+*.out
+*.o
+*.obj
+*.pdb
+*.ilk
+*.dSYM/
+
+# Visual Studio Code
+.vscode/
+
+# CMake build directories
+/build/
+/build-*/
+/cmake-build-*/
+
+# Temporary files
+*.tmp
+*.swp
+*~
