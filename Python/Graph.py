@@ -1,140 +1,68 @@
-import networkx as nx
 import matplotlib.pyplot as plt
+import networkx as nx
 
-"""
-Basic Graph
+def draw_graph(graph: nx.Graph, title: str, weighted: bool = False) -> None:
+        figure = plt.figure(num=title)
+        position = nx.spring_layout(graph, seed=42)
+        nx.draw(
+                graph,
+                position,
+                with_labels=True,
+                font_weight="bold",
+                node_size=800,
+                node_color="lightblue",
+                arrows=graph.is_directed(),
+        )
 
-"""
-print('''
-===================
-Graph Implemenation
-===================
-''')
+        if weighted:
+                labels = nx.get_edge_attributes(graph, "weight")
+                nx.draw_networkx_edge_labels(graph, position, edge_labels=labels)
 
-# Initialization
-graph = nx.Graph()
-
-print(type(graph)) # networkx.classes.graph.Graph
-
-# Insertion
-graph.add_edge(1, 2)
-graph.add_edge(1, 3)
-graph.add_edge(2, 3)
-graph.add_edge(3, 4)
-graph.add_edge(5, 4)
-
-# Draw Graph
-nx.draw(graph,
-        with_labels = True,
-        font_weight = 'bold',
-        node_size = 800)
-plt.show()
+        figure.suptitle(title)
+        plt.show()
+        plt.close()
 
 
-
-"""
-Directed Graph
-Arrows Show Data Flow Between Points
-
-"""
-print('''\n
-============================
-Directed Graph Implemenation
-============================
-''')
-
-# Initialization
-dgraph = nx.DiGraph()
-
-print(type(dgraph)) # networkx.classes.digraph.DiGraph
-
-# Insertion
-dgraph.add_edge(1, 2)
-dgraph.add_edge(1, 3)
-dgraph.add_edge(2, 3)
-dgraph.add_edge(3, 4)
-dgraph.add_edge(5, 4)
-
-# Draw Graph
-nx.draw(dgraph,
-        with_labels = True,
-        font_weight = 'bold',
-        node_size = 800,
-        arrows = True)
-plt.show()
+def basic_graph() -> nx.Graph:
+        graph = nx.Graph()
+        graph.add_edges_from(((1, 2), (1, 3), (2, 3), (3, 4), (5, 4)))
+        return graph
 
 
-
-"""
-Bi-Directed Graph
-Data flows back and forth between nodes
-"""
-print('''
-===============================
-Bi-Directed Graph Implemenation
-===============================
-''')
-
-# Initialization
-bdgraph = nx.Graph()
-
-print(type(bdgraph)) # networkx.classes.graph.Graph
-
-# Insertion
-bdgraph.add_edge('A', 'B', weight = 4)
-bdgraph.add_edge('B', 'C', weight = 2)
-bdgraph.add_edge('C', 'D', weight = 1)
-bdgraph.add_edge('D', 'E', weight = 3)
-bdgraph.add_edge('E', 'A', weight = 5)
-
-# Draw Graph with Weights
-pos = nx.spring_layout(bdgraph)
-nx.draw(bdgraph,
-        pos,
-        with_labels = True,
-        font_weight = 'bold',
-        node_size = 800,
-        node_color = 'lightblue')
-labels = nx.get_edge_attributes(bdgraph, 'weight')
-nx.draw_networkx_edge_labels(bdgraph, pos, edge_labels = labels)
-plt.show()
+def directed_graph() -> nx.DiGraph:
+        graph = nx.DiGraph()
+        graph.add_edges_from(((1, 2), (1, 3), (2, 3), (3, 4), (5, 4)))
+        return graph
 
 
+def weighted_graph() -> nx.Graph:
+        graph = nx.Graph()
+        graph.add_weighted_edges_from(
+                (("A", "B", 4), ("B", "C", 2), ("C", "D", 1),
+                 ("D", "E", 3), ("E", "A", 5))
+        )
+        return graph
 
-"""
-Weighted Directed Graph
-Arrows Show Data Flow Between Points
-Weights Show Lowest Cost Per Node
 
-"""
-print('''\n
-=====================================
-Weighted Directed Graph Implemenation
-=====================================
-''')
+def weighted_directed_graph() -> nx.DiGraph:
+        graph = nx.DiGraph()
+        graph.add_weighted_edges_from(
+                (("A", "B", 4), ("B", "C", 2), ("C", "D", 1),
+                 ("D", "C", 8), ("D", "E", 3), ("E", "A", 5))
+        )
+        return graph
 
-# Initialization
-wdgraph = nx.DiGraph()
 
-print(type(wdgraph)) # networkx.classes.digraph.DiGraph
+def main() -> None:
+        draw_graph(basic_graph(), "Basic Graph")
+        draw_graph(directed_graph(), "Directed Graph")
+        draw_graph(weighted_graph(), "Undirected/Bi-directed Weighted Graph", weighted=True)
+        draw_graph(
+                weighted_directed_graph(),
+                "Weighted Directed Graph",
+                weighted=True,
+        )
 
-# Insertion
-wdgraph.add_edge('A', 'B', weight = 4)
-wdgraph.add_edge('B', 'C', weight = 2)
-wdgraph.add_edge('C', 'D', weight = 1)
-wdgraph.add_edge('D', 'C', weight = 8)
-wdgraph.add_edge('D', 'E', weight = 3)
-wdgraph.add_edge('E', 'A', weight = 5)
 
-# Draw Graph with Weights
-pos = nx.spring_layout(wdgraph)
-nx.draw(wdgraph,
-        pos,
-        with_labels = True,
-        font_weight = 'bold',
-        node_size = 800,
-        arrows = True,
-        node_color = 'lightblue')
-labels = nx.get_edge_attributes(wdgraph, 'weight')
-nx.draw_networkx_edge_labels(wdgraph, pos, edge_labels = labels)
-plt.show()
+if __name__ == "__main__":
+        main()
