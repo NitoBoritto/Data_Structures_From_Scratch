@@ -1,7 +1,7 @@
 from queue import PriorityQueue, Queue
 
 
-def drain_queue(data_queue: Queue | PriorityQueue, name: str) -> None:
+def drain_queue(data_queue: Queue | PriorityQueue, name: str):
     """Remove items in FIFO or priority order until the queue is empty."""
     print(f"\n{name} dequeue:")
     # Queue.get() removes the next available item.
@@ -10,7 +10,7 @@ def drain_queue(data_queue: Queue | PriorityQueue, name: str) -> None:
     print(f"{name} size: {data_queue.qsize()}")
 
 
-def basic_queue() -> None:
+def basic_queue():
     """first-in, first-out queue."""
     # Queue is thread-safe and removes items in insertion order.
     data_queue = Queue()
@@ -28,7 +28,7 @@ def basic_queue() -> None:
     drain_queue(data_queue, "Queue")
 
 
-def priority_queue() -> None:
+def priority_queue():
     """Sorts queue ascendingly."""
     priority_queue = PriorityQueue()
 
@@ -45,7 +45,7 @@ def priority_queue() -> None:
     drain_queue(priority_queue, "Priority queue")
 
 
-def main() -> None:
+def main():
     """Run both queue demonstrations."""
     basic_queue()
     priority_queue()

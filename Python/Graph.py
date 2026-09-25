@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 
 
-def draw_graph(graph: nx.Graph, title: str, weighted: bool = False) -> None:
+def draw_graph(graph: nx.Graph, title: str, weighted: bool = False):
         """Draw a graph and optionally display its edge weights."""
         # Use the graph title for both the window name and the plot heading.
         figure = plt.figure(num=title)
