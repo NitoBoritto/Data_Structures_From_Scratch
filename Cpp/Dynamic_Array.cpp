@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-class Dynamic_Array_Number{
+class Dynamic_Array_Number {
 private:
 
     int* Array;     // Pointer to dynamically allocated array
@@ -10,9 +10,11 @@ private:
 
 private:
 
-    // Increase capacity when the array becomes full.
-    // The capacity is doubled to keep append/insert efficient.
-    void resize(int newSize) {
+    // Allocate a bigger array and move the old elements into it
+    // This is the expensive step of a dynamic array
+    void resize(int newSize)
+    {
+        // Never shrink
         if (newSize <= size)
         {
             return;
@@ -20,19 +22,25 @@ private:
 
         int* newArray = new int[newSize];
 
+        // Copy old elements
         for (int i = 0; i < length; i++)
         {
             newArray[i] = Array[i];
         }
 
+        // Delete old array
         delete[] Array;
+
+        // Use the new array
         Array = newArray;
         size = newSize;
     }
 
 
-    // Make sure there is enough space for the requested number of elements.
-    void ensure_capacity(int requiredCapacity) {
+    // Make sure there is enough space for the requested number of elements
+    // The capacity is doubled until it is big enough
+    void ensure_capacity(int requiredCapacity)
+    {
         if (requiredCapacity <= size)
         {
             return;
@@ -53,37 +61,43 @@ public:
     // Constructor
     // Creates an array with the given capacity
     // and copies the first Length elements from arr
-    Dynamic_Array_Number(int Size, int Length, int* arr) {
-        // Dynamic arrays need at least one slot so they can grow from an empty array.
+    Dynamic_Array_Number(int Size, int Length, int* arr)
+    {
+        // A dynamic array needs at least one slot so it can grow
         size = (Size > 0) ? Size : 1;
 
-        // Length cannot be greater than the initial capacity.
-        length = (Length >= 0 && Length <= size) ? Length : size;
+        // Length cannot be greater than Size
+        length = (Length <= size) ? Length : size;
 
-        // Allocate memory dynamically.
+        // No input array means no initial elements
+        if (arr == nullptr)
+        {
+            length = 0;
+        }
+
+        // Allocate memory dynamically
         Array = new int[size];
 
-        // Copy initial elements if an input array was provided.
-        if (arr != nullptr)
+        // Copy initial elements
+        for (int i = 0; i < length; i++)
         {
-            for (int i = 0; i < length; i++)
-            {
-                Array[i] = arr[i];
-            }
+            Array[i] = arr[i];
         }
     }
 
 
     // Destructor
     // Releases dynamically allocated memory
-    ~Dynamic_Array_Number() {
+    ~Dynamic_Array_Number()
+    {
         delete[] Array;
     }
 
 
     // Copy Constructor
     // Creates a deep copy of another object
-    Dynamic_Array_Number(const Dynamic_Array_Number& other) {
+    Dynamic_Array_Number(const Dynamic_Array_Number& other)
+    {
         size = other.size;
         length = other.length;
 
@@ -100,7 +114,8 @@ public:
 
     // Assignment Operator
     // Performs deep copy between objects
-    Dynamic_Array_Number& operator=(const Dynamic_Array_Number& other) {
+    Dynamic_Array_Number& operator=(const Dynamic_Array_Number& other)
+    {
         // Avoid self-assignment
         if (this == &other)
         {
@@ -128,32 +143,37 @@ public:
 
 
     // Insert value at a specific index
-    int insert(int index, int value)  {
-        // Valid index is from 0 to length.
-        if (index < 0 || index > length)
+    int insert(int index, int value)
+    {
+        // Check valid index
+        if (index >= 0 && index <= length)
         {
-            return 0;
+            // Grow automatically if the array is full
+            ensure_capacity(length + 1);
+
+            // Shift elements to the right
+            for (int i = length; i > index; i--)
+            {
+                Array[i] = Array[i - 1];
+            }
+
+            // Insert value
+            Array[index] = value;
+
+            // Increase number of elements
+            length++;
+
+            return 1;
         }
 
-        // Automatically grow if the array is full.
-        ensure_capacity(length + 1);
-
-        // Shift elements to the right.
-        for (int i = length; i > index; i--)
-        {
-            Array[i] = Array[i - 1];
-        }
-
-        Array[index] = value;
-        length++;
-
-        return 1;
+        return 0;
     }
 
 
     // Add value at the end
-    int append(int value) {
-        // Automatically grow if the array is full.
+    int append(int value)
+    {
+        // Grow automatically if the array is full
         ensure_capacity(length + 1);
 
         Array[length] = value;
@@ -165,20 +185,23 @@ public:
 
     // Insert value while keeping array sorted
     // The array must already be sorted
-    int insert_sorted(int value) {
-        // Automatically grow if the array is full.
+    int insert_sorted(int value)
+    {
+        // Grow automatically if the array is full
         ensure_capacity(length + 1);
 
         int i = length - 1;
 
-        // Shift larger elements to the right.
+        // Shift larger elements to the right
         while (i >= 0 && Array[i] > value)
         {
             Array[i + 1] = Array[i];
             i--;
         }
 
+        // Insert value
         Array[i + 1] = value;
+
         length++;
 
         return 1;
@@ -187,13 +210,16 @@ public:
 
     // Delete element by index
     // Returns deleted value
-    int delete_index(int index) {
-        if (index >= 0 && index < length) {
+    int delete_index(int index)
+    {
+        if (index >= 0 && index < length)
+        {
             // Save deleted value
             int x = Array[index];
 
             // Shift elements to the left
-            for (int i = index; i < length - 1; i++)  {
+            for (int i = index; i < length - 1; i++)
+            {
                 Array[i] = Array[i + 1];
             }
 
@@ -209,9 +235,12 @@ public:
 
     // Linear Search
     // Returns index if found, otherwise -1
-    int linear_search(int key) {
-        for (int i = 0; i < length; i++) {
-            if (Array[i] == key) {
+    int linear_search(int key)
+    {
+        for (int i = 0; i < length; i++)
+        {
+            if (Array[i] == key)
+            {
                 return i;
             }
         }
@@ -222,21 +251,26 @@ public:
 
     // Binary Search
     // Array must be sorted
-    int binary_search(int key) {
+    int binary_search(int key)
+    {
         int low = 0;
         int high = length - 1;
 
-        while (low <= high) {
+        while (low <= high)
+        {
             // Avoid potential overflow
             int mid = low + (high - low) / 2;
 
-            if (Array[mid] == key) {
+            if (Array[mid] == key)
+            {
                 return mid;
             }
-            else if (Array[mid] < key) {
+            else if (Array[mid] < key)
+            {
                 low = mid + 1;
             }
-            else {
+            else
+            {
                 high = mid - 1;
             }
         }
@@ -247,8 +281,10 @@ public:
 
     // Get element by index
     // Returns false if index is invalid
-    bool get(int index, int& value) {
-        if (index >= 0 && index < length) {
+    bool get(int index, int& value)
+    {
+        if (index >= 0 && index < length)
+        {
             value = Array[index];
             return true;
         }
@@ -258,8 +294,10 @@ public:
 
 
     // Change element at specific index
-    int set(int index, int value) {
-        if (index >= 0 && index < length) {
+    int set(int index, int value)
+    {
+        if (index >= 0 && index < length)
+        {
             Array[index] = value;
 
             return 1;
@@ -270,15 +308,19 @@ public:
 
 
     // Return maximum value
-    int max() {
-        if (length == 0) {
+    int max()
+    {
+        if (length == 0)
+        {
             return -1;
         }
 
         int max_value = Array[0];
 
-        for (int i = 1; i < length; i++) {
-            if (Array[i] > max_value) {
+        for (int i = 1; i < length; i++)
+        {
+            if (Array[i] > max_value)
+            {
                 max_value = Array[i];
             }
         }
@@ -288,14 +330,17 @@ public:
 
 
     // Return minimum value
-    int min() {
-        if (length == 0) {
+    int min()
+    {
+        if (length == 0)
+        {
             return -1;
         }
 
         int min_value = Array[0];
 
-        for (int i = 1; i < length; i++) {
+        for (int i = 1; i < length; i++)
+        {
             if (Array[i] < min_value)
             {
                 min_value = Array[i];
@@ -307,10 +352,12 @@ public:
 
 
     // Calculate sum of elements
-    int sum() {
+    int sum()
+    {
         int total = 0;
 
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < length; i++)
+        {
             total += Array[i];
         }
 
@@ -319,8 +366,10 @@ public:
 
 
     // Calculate average
-    double average() {
-        if (length == 0) {
+    double average()
+    {
+        if (length == 0)
+        {
             return 0.0;
         }
 
@@ -330,11 +379,13 @@ public:
 
 
     // Reverse array
-    int reverse() {
+    int reverse()
+    {
         int start = 0;
         int end = length - 1;
 
-        while (start < end) {
+        while (start < end)
+        {
             swap(Array[start], Array[end]);
 
             start++;
@@ -347,8 +398,10 @@ public:
 
     // Check whether array is sorted
     // Returns 1 if sorted, 0 otherwise
-    int is_sorted() {
-        for (int i = 0; i < length - 1; i++) {
+    int is_sorted()
+    {
+        for (int i = 0; i < length - 1; i++)
+        {
             if (Array[i] > Array[i + 1])
             {
                 return 0;
@@ -361,23 +414,28 @@ public:
 
     // Rearrange negative and non-negative values
     // Negative values move toward the beginning
-    int rearrange() {
+    int rearrange()
+    {
         int i = 0;
         int j = length - 1;
 
-        while (i < j) {
+        while (i < j)
+        {
             // Find first non-negative value
-            while (i < length && Array[i] < 0) {
+            while (i < length && Array[i] < 0)
+            {
                 i++;
             }
 
             // Find last negative value
-            while (j >= 0 && Array[j] >= 0) {
+            while (j >= 0 && Array[j] >= 0)
+            {
                 j--;
             }
 
             // Swap if positions are valid
-            if (i < j) {
+            if (i < j)
+            {
                 swap(Array[i], Array[j]);
             }
         }
@@ -387,39 +445,56 @@ public:
 
 
     // Merge two sorted arrays
-    int merge(Dynamic_Array_Number& arr2) {
-        // Make enough room for all elements.
-        ensure_capacity(length + arr2.length);
+    int merge(Dynamic_Array_Number& arr2)
+    {
+        // Create enough space for both arrays
+        int newSize = length + arr2.length;
 
-        int* mergedArray = new int[length + arr2.length];
+        // Keep at least one slot so the array can grow later
+        if (newSize == 0)
+        {
+            newSize = 1;
+        }
+
+        int* mergedArray = new int[newSize];
 
         int i = 0;
         int j = 0;
         int k = 0;
 
-        while (i < length && j < arr2.length) {
-            if (Array[i] < arr2.Array[j]) {
+        // Merge while both arrays have elements
+        while (i < length && j < arr2.length)
+        {
+            if (Array[i] < arr2.Array[j])
+            {
                 mergedArray[k++] = Array[i++];
             }
-            else {
+            else
+            {
                 mergedArray[k++] = arr2.Array[j++];
             }
         }
 
-        while (i < length) {
+        // Copy remaining elements from first array
+        while (i < length)
+        {
             mergedArray[k++] = Array[i++];
         }
 
-        while (j < arr2.length) {
+        // Copy remaining elements from second array
+        while (j < arr2.length)
+        {
             mergedArray[k++] = arr2.Array[j++];
         }
 
-        // Replace the current array with the merged result.
+        // Delete old array
         delete[] Array;
+
+        // Replace with merged array
         Array = mergedArray;
 
-        // Keep the same dynamic-array concept: capacity can grow as needed.
-        size = k;
+        // Update capacity and length
+        size = newSize;
         length = k;
 
         return 1;
@@ -428,37 +503,60 @@ public:
 
     // Union of two sorted arrays
     // Duplicate values are stored once
-    int union_array(Dynamic_Array_Number& arr2) {
-        int* unionArray = new int[length + arr2.length];
+    int union_array(Dynamic_Array_Number& arr2)
+    {
+        // Keep at least one slot so the array can grow later
+        int newSize = length + arr2.length;
+
+        if (newSize == 0)
+        {
+            newSize = 1;
+        }
+
+        int* unionArray = new int[newSize];
 
         int i = 0;
         int j = 0;
         int k = 0;
 
-        while (i < length && j < arr2.length) {
-            if (Array[i] < arr2.Array[j]) {
+        // Compare elements from both arrays
+        while (i < length && j < arr2.length)
+        {
+            if (Array[i] < arr2.Array[j])
+            {
                 unionArray[k++] = Array[i++];
             }
-            else if (Array[i] > arr2.Array[j]) {
+            else if (Array[i] > arr2.Array[j])
+            {
                 unionArray[k++] = arr2.Array[j++];
             }
-            else {
+            else
+            {
+                // Equal values → store once
                 unionArray[k++] = Array[i++];
+
                 j++;
             }
         }
 
-        while (i < length) {
+        // Copy remaining elements
+        while (i < length)
+        {
             unionArray[k++] = Array[i++];
         }
 
-        while (j < arr2.length) {
+        while (j < arr2.length)
+        {
             unionArray[k++] = arr2.Array[j++];
         }
 
+        // Replace old array
         delete[] Array;
+
         Array = unionArray;
-        size = k;
+
+        // Update capacity and length
+        size = newSize;
         length = k;
 
         return 1;
@@ -467,32 +565,43 @@ public:
 
     // Intersection of two sorted arrays
     // Keeps values existing in both arrays
-    int intersection(Dynamic_Array_Number& arr2) {
-        int newSize = (size < arr2.size) ? size : arr2.size;
-        int* intersectionArray = new int[newSize > 0 ? newSize : 1];
+    int intersection(Dynamic_Array_Number& arr2)
+    {
+        // Maximum possible intersection size
+        int newSize = std::min(size, arr2.size);
+
+        int* intersectionArray = new int[newSize];
 
         int i = 0;
         int j = 0;
         int k = 0;
 
-        while (i < length && j < arr2.length) {
-            if (Array[i] < arr2.Array[j]) {
+        // Find common elements
+        while (i < length && j < arr2.length)
+        {
+            if (Array[i] < arr2.Array[j])
+            {
                 i++;
             }
-            else if (Array[i] > arr2.Array[j]) {
+            else if (Array[i] > arr2.Array[j])
+            {
                 j++;
             }
-            else {
+            else
+            {
                 intersectionArray[k++] = Array[i++];
+
                 j++;
             }
         }
 
+        // Replace old array
         delete[] Array;
+
         Array = intersectionArray;
 
-        // Keep at least one slot so future append can grow normally.
-        size = (newSize > 0) ? newSize : 1;
+        // Update capacity and length
+        size = newSize;
         length = k;
 
         return 1;
@@ -501,32 +610,45 @@ public:
 
     // Difference: elements in current array
     // that are not present in arr2
-    int difference(Dynamic_Array_Number& arr2) {
+    int difference(Dynamic_Array_Number& arr2)
+    {
         int* differenceArray = new int[size];
 
         int i = 0;
         int j = 0;
         int k = 0;
 
-        while (i < length && j < arr2.length) {
-            if (Array[i] < arr2.Array[j]) {
+        // Compare both sorted arrays
+        while (i < length && j < arr2.length)
+        {
+            if (Array[i] < arr2.Array[j])
+            {
                 differenceArray[k++] = Array[i++];
             }
-            else if (Array[i] > arr2.Array[j]) {
+            else if (Array[i] > arr2.Array[j])
+            {
                 j++;
             }
-            else {
+            else
+            {
+                // Same element exists in both arrays
                 i++;
                 j++;
             }
         }
 
-        while (i < length) {
+        // Copy remaining elements
+        while (i < length)
+        {
             differenceArray[k++] = Array[i++];
         }
 
+        // Replace old array
         delete[] Array;
+
         Array = differenceArray;
+
+        // Capacity stays the same
         length = k;
 
         return 1;
@@ -534,8 +656,10 @@ public:
 
 
     // Display all stored elements
-    int display() {
-        for (int i = 0; i < length; i++) {
+    int display()
+    {
+        for (int i = 0; i < length; i++)
+        {
             cout << Array[i] << " ";
         }
 
@@ -546,36 +670,44 @@ public:
 
 
     // Return total capacity
-    int get_size() {
+    int get_size()
+    {
         return size;
     }
 
 
     // Return number of stored elements
-    int get_length() {
+    int get_length()
+    {
         return length;
     }
 
 
     // Return pointer to array for read-only access
-    const int* get_array() const {
+    const int* get_array() const
+    {
         return Array;
     }
 
 
     // Replace array contents by copying values
-    int set_array(int* arr, int newLength) {
-        if (newLength < 0) {
+    int set_array(int* arr, int newLength)
+    {
+        if (newLength < 0)
+        {
             return 0;
         }
 
-        // Automatically grow when the new data is larger than capacity.
+        // Grow automatically if new data does not fit
         ensure_capacity(newLength);
 
-        for (int i = 0; i < newLength; i++) {
+        // Copy elements
+        for (int i = 0; i < newLength; i++)
+        {
             Array[i] = arr[i];
         }
 
+        // Update length
         length = newLength;
 
         return 1;
@@ -590,7 +722,7 @@ int main() {
     // ============================================
 
     cout << "============================================" << endl;
-    cout << "     Welcome To Array Application" << endl;
+    cout << "   Welcome To Dynamic Array Application" << endl;
     cout << "============================================" << endl;
 
 
@@ -600,7 +732,7 @@ int main() {
 
     int size;
 
-    cout << "\nEnter Array Capacity: ";
+    cout << "\nEnter Starting Capacity: ";
     cin >> size;
 
     Dynamic_Array_Number arr(size, 0, nullptr);
@@ -670,7 +802,7 @@ int main() {
                         cout << "Number added successfully." << endl;
                     }
                     else {
-                        cout << "Array is full!" << endl;
+                        cout << "Failed to add number!" << endl;
                     }
                 }
 
@@ -691,7 +823,7 @@ int main() {
                         cout << "Number inserted successfully." << endl;
                     }
                     else {
-                        cout << "Invalid index or Array is full!" << endl;
+                        cout << "Invalid index!" << endl;
                     }
                 }
 
@@ -708,7 +840,7 @@ int main() {
                         cout << "Number inserted successfully." << endl;
                     }
                     else {
-                        cout << "Array is full!" << endl;
+                        cout << "Failed to insert number!" << endl;
                     }
                 }
 
