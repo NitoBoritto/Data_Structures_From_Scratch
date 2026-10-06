@@ -1,8 +1,7 @@
 #include <iostream>
 using namespace std;
 
-class Static_Array_Number
-{
+class Static_Array_Number {
 private:
 
     int* Array;     // Pointer to dynamically allocated array
