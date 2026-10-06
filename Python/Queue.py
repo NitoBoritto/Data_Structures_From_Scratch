@@ -1,17 +1,21 @@
 from queue import PriorityQueue, Queue
 
 
-def drain_queue(data_queue: Queue | PriorityQueue, name: str) -> None:
-    """Remove and display every item in a queue."""
+def drain_queue(data_queue: Queue | PriorityQueue, name: str):
+    """Remove items in FIFO or priority order until the queue is empty."""
     print(f"\n{name} dequeue:")
+    # Queue.get() removes the next available item.
     while data_queue.empty() == False:
         print(f'Element "{data_queue.get()}" has been removed')
     print(f"{name} size: {data_queue.qsize()}")
 
 
-def basic_queue() -> None:
+def basic_queue():
+    """first-in, first-out queue."""
+    # Queue is thread-safe and removes items in insertion order.
     data_queue = Queue()
 
+    # Enqueue items at the back of the queue.
     for item in ("Data Structures", 35, "CS50", 911.119):
         data_queue.put(item)
 
@@ -24,9 +28,11 @@ def basic_queue() -> None:
     drain_queue(data_queue, "Queue")
 
 
-def priority_queue() -> None:
+def priority_queue():
+    """Sorts queue ascendingly."""
     priority_queue = PriorityQueue()
 
+    # PriorityQueue sorts comparable values as they are removed.
     for item in (72, 35, 911.119, 0.75):
         priority_queue.put(item)
 
@@ -39,7 +45,8 @@ def priority_queue() -> None:
     drain_queue(priority_queue, "Priority queue")
 
 
-def main() -> None:
+def main():
+    """Run both queue demonstrations."""
     basic_queue()
     priority_queue()
 
