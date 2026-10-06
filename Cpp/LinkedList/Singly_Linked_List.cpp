@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 using namespace std;
 struct Node {
     int data;       // Value stored in this node
@@ -390,9 +391,9 @@ public:
 
 
     // Return sum of all values
-    int sum()
+    long long sum()
     {
-        int total = 0;
+        long long total = 0;
 
         Node* current = first_node();
 
@@ -494,6 +495,16 @@ public:
 };
 
 
+void read_input(int& value)
+{
+    if (!(cin >> value))
+    {
+        cerr << "Input error: expected an integer." << endl;
+        std::exit(EXIT_FAILURE);
+    }
+}
+
+
 int main() {
 
     // ============================================
@@ -533,7 +544,7 @@ int main() {
 
         cout << "============================================" << endl;
         cout << "Enter your choice: ";
-        cin >> mainChoice;
+        read_input(mainChoice);
 
 
         // ==================================================
@@ -561,7 +572,7 @@ int main() {
 
                 cout << "============================================" << endl;
                 cout << "Enter your choice: ";
-                cin >> choice;
+                read_input(choice);
 
 
                 // Append Number
@@ -570,7 +581,7 @@ int main() {
                     int value;
 
                     cout << "\nEnter number: ";
-                    cin >> value;
+                    read_input(value);
 
                     list.append(value);
 
@@ -586,7 +597,7 @@ int main() {
                     int value;
 
                     cout << "\nEnter number: ";
-                    cin >> value;
+                    read_input(value);
 
                     list.prepend(value);
 
@@ -603,10 +614,10 @@ int main() {
                     int value;
 
                     cout << "\nEnter index: ";
-                    cin >> index;
+                    read_input(index);
 
                     cout << "Enter number: ";
-                    cin >> value;
+                    read_input(value);
 
                     if (list.insert(index, value)) {
                         cout << "Number inserted successfully." << endl;
@@ -625,7 +636,7 @@ int main() {
                     int value;
 
                     cout << "\nEnter number: ";
-                    cin >> value;
+                    read_input(value);
 
                     if (list.is_sorted()) {
                         list.insert_sorted(value);
@@ -646,7 +657,7 @@ int main() {
                     int index;
 
                     cout << "\nEnter index: ";
-                    cin >> index;
+                    read_input(index);
 
                     if (index >= 0 && index < list.get_length()) {
                         cout << "Deleted number: " << list.delete_index(index) << endl;
@@ -666,7 +677,7 @@ int main() {
                     int value;
 
                     cout << "\nEnter index: ";
-                    cin >> index;
+                    read_input(index);
 
                     if (list.get(index, value)) {
                         cout << "Number at index " << index << " = " << value << endl;
@@ -684,10 +695,10 @@ int main() {
                     int value;
 
                     cout << "\nEnter index: ";
-                    cin >> index;
+                    read_input(index);
 
                     cout << "Enter new value: ";
-                    cin >> value;
+                    read_input(value);
 
                     if (list.set(index, value)) {
                         cout << "Value updated successfully." << endl;
@@ -727,7 +738,7 @@ int main() {
 
                 cout << "============================================" << endl;
                 cout << "Enter your choice: ";
-                cin >> choice;
+                read_input(choice);
 
 
                 // Linear Search
@@ -736,7 +747,7 @@ int main() {
                     int key;
 
                     cout << "\nEnter number to search: ";
-                    cin >> key;
+                    read_input(key);
 
                     int index = list.linear_search(key);
 
@@ -779,7 +790,7 @@ int main() {
 
                 cout << "============================================" << endl;
                 cout << "Enter your choice: ";
-                cin >> choice;
+                read_input(choice);
 
 
                 // Maximum
@@ -853,7 +864,7 @@ int main() {
 
                 cout << "============================================" << endl;
                 cout << "Enter your choice: ";
-                cin >> choice;
+                read_input(choice);
 
 
                 // Reverse List
@@ -907,7 +918,7 @@ int main() {
 
                 cout << "============================================" << endl;
                 cout << "Enter your choice: ";
-                cin >> choice;
+                read_input(choice);
 
 
                 // Display List

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 using namespace std;
 
 class Dynamic_Array_Number {
@@ -66,8 +67,8 @@ public:
         // A dynamic array needs at least one slot so it can grow
         size = (Size > 0) ? Size : 1;
 
-        // Length cannot be greater than Size
-        length = (Length <= size) ? Length : size;
+        // Keep the stored length within the allocated capacity
+        length = (Length < 0) ? 0 : ((Length <= size) ? Length : size);
 
         // No input array means no initial elements
         if (arr == nullptr)
@@ -352,9 +353,9 @@ public:
 
 
     // Calculate sum of elements
-    int sum()
+    long long sum()
     {
-        int total = 0;
+        long long total = 0;
 
         for (int i = 0; i < length; i++)
         {
@@ -522,32 +523,48 @@ public:
         // Compare elements from both arrays
         while (i < length && j < arr2.length)
         {
+            int value;
+
             if (Array[i] < arr2.Array[j])
             {
-                unionArray[k++] = Array[i++];
+                value = Array[i++];
             }
             else if (Array[i] > arr2.Array[j])
             {
-                unionArray[k++] = arr2.Array[j++];
+                value = arr2.Array[j++];
             }
             else
             {
-                // Equal values → store once
-                unionArray[k++] = Array[i++];
+                value = Array[i++];
 
                 j++;
+            }
+
+            if (k == 0 || unionArray[k - 1] != value)
+            {
+                unionArray[k++] = value;
             }
         }
 
         // Copy remaining elements
         while (i < length)
         {
-            unionArray[k++] = Array[i++];
+            int value = Array[i++];
+
+            if (k == 0 || unionArray[k - 1] != value)
+            {
+                unionArray[k++] = value;
+            }
         }
 
         while (j < arr2.length)
         {
-            unionArray[k++] = arr2.Array[j++];
+            int value = arr2.Array[j++];
+
+            if (k == 0 || unionArray[k - 1] != value)
+            {
+                unionArray[k++] = value;
+            }
         }
 
         // Replace old array
@@ -693,7 +710,7 @@ public:
     // Replace array contents by copying values
     int set_array(int* arr, int newLength)
     {
-        if (newLength < 0)
+        if (newLength < 0 || (newLength > 0 && arr == nullptr))
         {
             return 0;
         }
@@ -715,6 +732,16 @@ public:
 };
 
 
+void read_input(int& value)
+{
+    if (!(cin >> value))
+    {
+        cerr << "Input error: expected an integer." << endl;
+        std::exit(EXIT_FAILURE);
+    }
+}
+
+
 int main() {
 
     // ============================================
@@ -733,7 +760,7 @@ int main() {
     int size;
 
     cout << "\nEnter Starting Capacity: ";
-    cin >> size;
+    read_input(size);
 
     Dynamic_Array_Number arr(size, 0, nullptr);
 
@@ -760,7 +787,7 @@ int main() {
 
         cout << "============================================" << endl;
         cout << "Enter your choice: ";
-        cin >> mainChoice;
+        read_input(mainChoice);
 
 
         // ==================================================
@@ -787,7 +814,7 @@ int main() {
 
                 cout << "============================================" << endl;
                 cout << "Enter your choice: ";
-                cin >> choice;
+                read_input(choice);
 
 
                 // Append
@@ -796,7 +823,7 @@ int main() {
                     int value;
 
                     cout << "\nEnter number: ";
-                    cin >> value;
+                    read_input(value);
 
                     if (arr.append(value)) {
                         cout << "Number added successfully." << endl;
@@ -814,10 +841,10 @@ int main() {
                     int value;
 
                     cout << "\nEnter index: ";
-                    cin >> index;
+                    read_input(index);
 
                     cout << "Enter number: ";
-                    cin >> value;
+                    read_input(value);
 
                     if (arr.insert(index, value)) {
                         cout << "Number inserted successfully." << endl;
@@ -834,7 +861,7 @@ int main() {
                     int value;
 
                     cout << "\nEnter number: ";
-                    cin >> value;
+                    read_input(value);
 
                     if (arr.insert_sorted(value)) {
                         cout << "Number inserted successfully." << endl;
@@ -851,7 +878,7 @@ int main() {
                     int index;
 
                     cout << "\nEnter index: ";
-                    cin >> index;
+                    read_input(index);
 
                     int deletedValue = arr.delete_index(index);
 
@@ -872,7 +899,7 @@ int main() {
                     int value;
 
                     cout << "\nEnter index: ";
-                    cin >> index;
+                    read_input(index);
 
                     if (arr.get(index, value)) {
                         cout << "Value = " << value << endl;
@@ -890,10 +917,10 @@ int main() {
                     int value;
 
                     cout << "\nEnter index: ";
-                    cin >> index;
+                    read_input(index);
 
                     cout << "Enter new value: ";
-                    cin >> value;
+                    read_input(value);
 
                     if (arr.set(index, value)) {
                         cout << "Value updated successfully." << endl;
@@ -940,7 +967,7 @@ int main() {
 
                 cout << "============================================" << endl;
                 cout << "Enter your choice: ";
-                cin >> choice;
+                read_input(choice);
 
 
                 // Linear Search
@@ -949,7 +976,7 @@ int main() {
                     int key;
 
                     cout << "\nEnter number to search: ";
-                    cin >> key;
+                    read_input(key);
 
                     int index = arr.linear_search(key);
 
@@ -969,7 +996,7 @@ int main() {
                     int key;
 
                     cout << "\nEnter number to search: ";
-                    cin >> key;
+                    read_input(key);
 
                     cout << "\nNOTE: Binary Search requires "
                          << "a sorted array." << endl;
@@ -1024,7 +1051,7 @@ int main() {
 
                 cout << "============================================" << endl;
                 cout << "Enter your choice: ";
-                cin >> choice;
+                read_input(choice);
 
 
                 // Maximum
@@ -1111,7 +1138,7 @@ int main() {
 
                 cout << "============================================" << endl;
                 cout << "Enter your choice: ";
-                cin >> choice;
+                read_input(choice);
 
 
                 // Reverse
@@ -1188,7 +1215,7 @@ int main() {
 
                 cout << "============================================" << endl;
                 cout << "Enter your choice: ";
-                cin >> choice;
+                read_input(choice);
 
 
                 // ------------------------------------------
@@ -1200,21 +1227,21 @@ int main() {
                     int size2;
 
                     cout << "\nEnter second array capacity: ";
-                    cin >> size2;
+                    read_input(size2);
 
                     Dynamic_Array_Number arr2(size2, 0, nullptr);
 
                     int n;
 
                     cout << "How many numbers do you want to add? ";
-                    cin >> n;
+                    read_input(n);
 
                     for (int i = 0; i < n; i++) {
 
                         int value;
 
                         cout << "Enter number " << i + 1 << ": ";
-                        cin >> value;
+                        read_input(value);
 
                         arr2.append(value);
                     }
@@ -1237,21 +1264,21 @@ int main() {
                     int size2;
 
                     cout << "\nEnter second array capacity: ";
-                    cin >> size2;
+                    read_input(size2);
 
                     Dynamic_Array_Number arr2(size2, 0, nullptr);
 
                     int n;
 
                     cout << "How many numbers do you want to add? ";
-                    cin >> n;
+                    read_input(n);
 
                     for (int i = 0; i < n; i++) {
 
                         int value;
 
                         cout << "Enter number " << i + 1 << ": ";
-                        cin >> value;
+                        read_input(value);
 
                         arr2.append(value);
                     }
@@ -1274,21 +1301,21 @@ int main() {
                     int size2;
 
                     cout << "\nEnter second array capacity: ";
-                    cin >> size2;
+                    read_input(size2);
 
                     Dynamic_Array_Number arr2(size2, 0, nullptr);
 
                     int n;
 
                     cout << "How many numbers do you want to add? ";
-                    cin >> n;
+                    read_input(n);
 
                     for (int i = 0; i < n; i++) {
 
                         int value;
 
                         cout << "Enter number " << i + 1 << ": ";
-                        cin >> value;
+                        read_input(value);
 
                         arr2.append(value);
                     }
@@ -1311,21 +1338,21 @@ int main() {
                     int size2;
 
                     cout << "\nEnter second array capacity: ";
-                    cin >> size2;
+                    read_input(size2);
 
                     Dynamic_Array_Number arr2(size2, 0, nullptr);
 
                     int n;
 
                     cout << "How many numbers do you want to add? ";
-                    cin >> n;
+                    read_input(n);
 
                     for (int i = 0; i < n; i++) {
 
                         int value;
 
                         cout << "Enter number " << i + 1 << ": ";
-                        cin >> value;
+                        read_input(value);
 
                         arr2.append(value);
                     }
@@ -1376,7 +1403,7 @@ int main() {
 
                 cout << "============================================" << endl;
                 cout << "Enter your choice: ";
-                cin >> choice;
+                read_input(choice);
 
 
                 // Display
