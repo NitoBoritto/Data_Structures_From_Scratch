@@ -1,632 +1,458 @@
-# 📚 Array Data Structure في C++
-## Static Array  vs  Dynamic Array
+<div align="center">
 
-**English:** This guide explains two array implementations, their memory
-layout, common operations, search methods, set operations, and their costs.
-**بالعربي:** الدليل بيشرح نسختين من الـ Array، شكل الذاكرة، العمليات، طرق
-البحث، عمليات المجموعات، والتعقيد.
+# Array Data Structure in C++
 
-## Real animated walkthrough | Animation متحركة فعلية
+**Static Array &nbsp;vs&nbsp; Dynamic Array**
 
-![Animated array insertion | إدراج في Array خطوة بخطوة](../animations/array.gif)
+شرح عملي لنسختين من الـ Array في C++ مع أنيميشن لكل عملية
 
-The GIF shows `insert(1, 15)` on `[10, 20, 30]`. The program shifts elements
-right from the end so it does not overwrite a value that still needs moving.
-الـ GIF بتعرض إدراج 15 عند الفهرس 1 في `[10, 20, 30]`. بنزحزح من الآخر لليمين
-عشان ما نمسحش قيمة لسه محتاجين ننقلها.
+![C++](https://img.shields.io/badge/C%2B%2B-17-00599C?logo=cplusplus&logoColor=white)
+![Type](https://img.shields.io/badge/Data%20Structure-Array-2ea043)
+![Operations](https://img.shields.io/badge/Operations-20%2B-orange)
+![Animations](https://img.shields.io/badge/Animations-17%20GIFs-8e44ad)
 
-**Follow the four animation frames / تابع إطارات الحركة الأربعة:**
+</div>
 
-1. **Start:** three used elements and one free slot. البداية: 3 عناصر وخانة
-   فاضية.
-2. **Open a slot:** copy 30 into the next position. افتح مكان بنسخ 30 للخانة
-   التالية.
-3. **Shift:** copy 20 one step right. حرّك 20 خطوة لليمين.
-4. **Insert:** write 15 at index 1 and increase `length`. اكتب 15 في الفهرس 1
-   وبعدها زوّد `length`.
+---
 
-مشروع بيشرح ويطبّق **الـ Array كـ Data Structure** في C++ بنسختين:
+## Overview
 
-| الملف | الـ Class | الفكرة |
+This project implements an integer **Array** as a C++ class in two flavours, each with an interactive menu-driven program, and explains every operation with a step-by-step animation.
+
+المشروع بيطبّق الـ Array كـ class بنسختين، وكل نسخة ليها برنامج تفاعلي كامل (Menu)، وكل عملية معاها أنيميشن بيوضح اللي بيحصل خطوة بخطوة.
+
+| File | Class | Idea |
 |---|---|---|
-| `Static_Array.cpp` | `Static_Array_Number` | سعة **ثابتة** — لو الـ array اتملت، العملية بتفشل |
-| `Dynamic_Array.cpp` | `Dynamic_Array_Number` | سعة **بتكبر لوحدها** — لو اتملت بتضاعف نفسها |
+| `Static_Array.cpp` | `Static_Array_Number` | سعة **ثابتة**. لو الـ array اتملت العملية بتفشل. |
+| `Dynamic_Array.cpp` | `Dynamic_Array_Number` | سعة **بتكبر تلقائياً**. لو اتملت بتتضاعف. |
 
-الاتنين فيهم نفس الـ Menu ونفس العمليات (إضافة، حذف، بحث، عمليات حسابية، عمليات مجموعات…) وبرنامج تفاعلي كامل في `main()`.
+## Table of Contents
 
----
-
-## 📑 الفهرس
-
-1. شكل المشروع
-2. التشغيل
-3. الـ Array في الميموري: `size` و `length`
-4. الفرق الجوهري بين النسختين
-5. الـ Class من جوه
-6. العمليات الأساسية (Append / Insert / Delete …)
-7. البحث
-8. العمليات الحسابية
-9. عمليات على الـ Array (Reverse / Is Sorted / Rearrange)
-10. عمليات المجموعات (Merge / Union / Intersection / Difference)
-11. شرح `main()` والـ Menu
-12. جدول التعقيد Big-O
-13. مثال تشغيل حقيقي
-14. ملاحظات من مراجعة الكود
+1. [Project Structure](#1-project-structure)
+2. [Build and Run](#2-build-and-run)
+3. [Memory Layout](#3-memory-layout)
+4. [Static vs Dynamic](#4-static-vs-dynamic)
+5. [Class Internals](#5-class-internals)
+6. [Basic Operations](#6-basic-operations)
+7. [Searching](#7-searching)
+8. [Mathematical Operations](#8-mathematical-operations)
+9. [Array Operations](#9-array-operations)
+10. [Set Operations](#10-set-operations)
+11. [The Menu Program](#11-the-menu-program)
+12. [Sample Runs](#12-sample-runs)
+13. [Code Review Notes](#13-code-review-notes)
+14. [Final Comparisons](#14-final-comparisons)
 
 ---
 
-## 📖 دليل رموز الرسوم خطوة بخطوة
+## How to Read the Animations
 
-الرسوم النصية التالية **خطوات ثابتة توضيحية** وليست GIF. للأنيميشن المتحركة
-الحقيقية شغّل الصورة أعلاه؛ كل إطار فيها بيتغير تلقائياً.
+Every GIF uses the same visual language.
 
-| الرمز | المعنى |
+| Marker | Meaning |
 |:-:|---|
-| `_` أو `?` | خانة فاضية / قيمة مش مهمة |
-| `i` `j` | مؤشرات (indexes) في الكود |
-| `L` `M` `H` | `low` / `mid` / `high` في الـ Binary Search |
-| `S` `E` | `start` / `end` في الـ Reverse |
-| `(30)` | قيمة لسه موجودة في الميموري بس **برة** الـ `length` (يعني مش محسوبة) |
+| 🟦 Blue | Normal element inside the array |
+| 🟧 Orange | Element being written or compared right now |
+| 🟪 Purple | Source element (value is copied from it) |
+| 🟩 Green | Success: added, written, or found |
+| 🟥 Red | Failure, skipped, or removed |
+| ⬜ Gray | Empty slot |
+| `(30)` | Value still in memory but **outside** `length` (ignored) |
+| `▲i` `▲j` | Loop indexes in the code |
+| `▲L` `▲M` `▲H` | `low` / `mid` / `high` in binary search |
+| `▲S` `▲E` | `start` / `end` in reverse |
+| `▲length` | First slot after the last stored element |
+
+The small gray numbers above the cells are indexes, and the caption under each frame explains the current step.
 
 ---
 
-## 1. شكل المشروع
+## 1. Project Structure
 
+```text
+Array/
+├── README.md
+├── Static_Array.cpp         # fixed-capacity version
+├── Dynamic_Array.cpp        # auto-growing version
+└── animations/              # all GIFs used in this README
+    ├── array_append_static.gif
+    ├── array_append_dynamic.gif
+    └── ...
 ```
-Array-Project/
-├── README.md              ← الملف ده
-├── Static_Array.cpp       ← النسخة ذات السعة الثابتة
-└── Dynamic_Array.cpp      ← النسخة اللي بتكبر تلقائياً
-```
 
-كل ملف فيه **3 أجزاء**:
+Each `.cpp` file has three parts:
 
-1. **الـ Class** (`Static_Array_Number` / `Dynamic_Array_Number`) — فيه البيانات والعمليات.
-2. **`read_input()`** — دالة بتقرا رقم صحيح من المستخدم وبتقفل البرنامج لو دخل حاجة مش رقم.
-3. **`main()`** — الـ Menu التفاعلي اللي بيستخدم الـ class.
+1. **The class**: data members and all operations.
+2. **`read_input()`**: reads an integer and exits with an error message if the input is not a number.
+3. **`main()`**: the interactive menu that drives the class.
 
----
+## 2. Build and Run
 
-## 2. التشغيل
-
-Requires a compiler with C++17 support, such as GCC, Clang, or MSVC.
-محتاج Compiler بيدعم C++17 أو أحدث، زي GCC أو Clang أو MSVC.
+Requires a compiler with C++17 support (GCC, Clang, or MSVC).
 
 ```bash
-# النسخة الثابتة
+# Static version
 g++ -std=c++17 -Wall -Wextra Static_Array.cpp -o static_array
 ./static_array
 
-# النسخة الديناميكية
+# Dynamic version
 g++ -std=c++17 -Wall -Wextra Dynamic_Array.cpp -o dynamic_array
 ./dynamic_array
 ```
 
-على Windows استخدم `static_array.exe` بدل `./static_array`.
+> On Windows use `static_array.exe` instead of `./static_array`.
 
-أول حاجة البرنامج هيسألك عنها هي **السعة (Capacity)**، وبعدها بيظهر الـ Main Menu.
+The first prompt asks for the **capacity**, then the main menu appears.
 
 ---
 
-## 3. الـ Array في الميموري: `size` و `length`
+## 3. Memory Layout
 
-الـ class عنده **3 متغيرات** بس (كلهم `private`):
+The class has three private members:
 
-| المتغير | معناه |
+| Member | Meaning |
 |---|---|
-| `int* Array` | مؤشر على الـ array الفعلي اللي متخزن في الـ Heap |
-| `int size` | **السعة** (Capacity): أقصى عدد عناصر الـ array تقدر تشيلهم دلوقتي |
-| `int length` | **الطول**: عدد العناصر اللي **فعلاً** متخزنة |
+| `int* Array` | Pointer to the real array on the heap |
+| `int size` | **Capacity**: the maximum number of elements it can hold now |
+| `int length` | Number of elements **actually stored** |
 
-دايماً: `0 ≤ length ≤ size`
+Invariant: `0 ≤ length ≤ size`
 
-```
- الـ object (arr)               الـ Heap
+```text
+ object (arr)                    Heap
 ┌─────────────────┐
 │ Array  ─────────┼───►  ┌────┬────┬────┬────┬────┐
 │ size   = 5      │      │ 10 │ 20 │ 30 │  ? │  ? │
 │ length = 3      │      └────┴────┴────┴────┴────┘
 └─────────────────┘        ◄─ length = 3 ─►
-                           ◄────────── size = 5 ─────►
+                           ◄────────── size = 5 ──────►
 ```
 
-> **مهم:** أي عملية بتشتغل على `length` بس (من index `0` لحد `length-1`)، والخانات بعد كده تعتبر فاضية حتى لو فيها قيم قديمة.
+> [!IMPORTANT]
+> Every operation works on indexes `0` to `length - 1` only. Slots after that are treated as empty even if they still contain old values.
 
 ---
 
-## 4. الفرق الجوهري بين النسختين
+## 4. Static vs Dynamic
 
-### 🎬 أنيميشن: Append لما الـ array تتملي
+### 4.1 Append when the array is full
 
-**Static** (`size = 3`):
+**Static** (`size = 3`): the fourth append fails.
 
-```
-Frame 0   append(10)   │ 10 │  _ │  _ │    length=1   ✅
-Frame 1   append(20)   │ 10 │ 20 │  _ │    length=2   ✅
-Frame 2   append(30)   │ 10 │ 20 │ 30 │    length=3   ✅  (ممتلية)
-Frame 3   append(40)   length < size ؟  3 < 3 ؟  لأ
-                       return 0  ❌   →  "Array is full!"
-```
+<p align="center"><img src="animations/array_append_static.gif" width="720" alt="Static append"></p>
 
-**Dynamic** (`size = 2`):
+**Dynamic** (`size = 2`): when full, `ensure_capacity` doubles the capacity and copies the old elements.
 
-```
-Frame 0   append(10)   │ 10 │  _ │              size=2 length=1   ✅
-Frame 1   append(20)   │ 10 │ 20 │              size=2 length=2   ✅  (ممتلية)
-Frame 2   append(30)   ممتلية؟ آه → ensure_capacity(3) → size: 2 → 4
-                       │ 10 │ 20 │ 30 │  _ │    size=4 length=3   ✅
-Frame 3   append(40)   │ 10 │ 20 │ 30 │ 40 │    size=4 length=4   ✅  (ممتلية)
-Frame 4   append(50)   ممتلية؟ آه → ensure_capacity(5) → size: 4 → 8
-                       │ 10 │ 20 │ 30 │ 40 │ 50 │  _ │  _ │  _ │   size=8 length=5  ✅
-```
+<p align="center"><img src="animations/array_append_dynamic.gif" width="720" alt="Dynamic append with resize"></p>
 
-### جدول الاختلافات بين الملفين (سطر بسطر)
+Resize steps for `append(30)` when `size = 2` and `length = 2`:
 
-| الجزء | `Static_Array.cpp` | `Dynamic_Array.cpp` |
-|---|---|---|
-| **اسم الـ class** | `Static_Array_Number` | `Dynamic_Array_Number` |
-| **Constructor** (`size`) | `size >= 0` (ممكن تبقى `0`) | `size >= 1` (لازم خانة واحدة على الأقل عشان تقدر تكبر) |
-| **دوال خاصة** | مفيش | `resize()` و `ensure_capacity()` |
-| **`append`** | بترجع `0` لو الـ array ممتلية | بتكبّر الـ array تلقائياً وبترجع `1` دايماً |
-| **`insert`** | بتفشل لو ممتلية | بتكبّر تلقائياً |
-| **`insert_sorted`** | بتفشل لو ممتلية | بتكبّر تلقائياً |
-| **`set_array`** | بترجع `0` لو `newLength > size` | بتكبّر تلقائياً بـ `ensure_capacity` |
-| **`merge`** / **`union_array`** | السعة الجديدة = `size + arr2.size` | السعة الجديدة = `length + arr2.length` (على الأقل `1`) |
-| **`intersection`** / **`difference`** | نفس المنطق | نفس المنطق |
-| **رسايل الفشل في `main`** | `"Array is full!"` | `"Failed to add number!"` (عملياً مبتظهرش لأن `append` بترجع `1` دايماً) |
-| **عنوان الترحيب** | `Welcome To Array Application` | `Welcome To Dynamic Array Application` |
-| **سؤال السعة** | `Enter Array Capacity` | `Enter Starting Capacity` |
+| # | Step | State |
+|:-:|---|---|
+| 1 | The array is full | `│10│20│` |
+| 2 | `ensure_capacity(3)` doubles `2 → 4` and allocates `new int[4]` | `│?│?│?│?│` |
+| 3 | Copy the old elements (`for i < length`) | `│10│20│?│?│` |
+| 4 | `delete[] Array`, then `Array = newArray`, `size = 4` | old memory released |
+| 5 | `Array[length] = 30; length++` | `│10│20│30│_│` |
 
-باقي الدوال (`delete_index`, `linear_search`, `binary_search`, `get`, `set`, `max`, `min`, `sum`, `average`, `reverse`, `is_sorted`, `rearrange`, `display`, …) **متطابقة** في الملفين.
+**Why double instead of growing by one?**
+A resize copies every element, so growing by one slot would make every `append` cost `O(n)`. Doubling makes resizes rare (at 2, 4, 8, 16, ...), so the average cost per `append` is `O(1)`. This is called **amortized O(1)**.
 
-### 🎬 أنيميشن: الـ Dynamic Array بيكبر إزاي (`resize`)
-
-الحالة: `size=2` و `length=2`، وبنعمل `append(30)`.
-
-```
-Frame 1   الـ array ممتلية
-          Array ──►  │ 10 │ 20 │                 size=2  length=2
-
-Frame 2   ensure_capacity(3):  newSize = 2 ... 2 < 3 → newSize = 4  (بنضاعف)
-          new int[4]
-          newArray ─► │  ? │  ? │  ? │  ? │
-
-Frame 3   نسخ العناصر القديمة (for i < length)
-          newArray ─► │ 10 │ 20 │  ? │  ? │
-
-Frame 4   delete[] Array      ← الميموري القديمة اتمسحت
-          Array = newArray    ← الـ pointer بقى يشاور على الجديدة
-          size  = 4
-
-Frame 5   Array[length] = 30 ;  length++
-          Array ──►  │ 10 │ 20 │ 30 │  _ │      size=4  length=3
-```
-
-**ليه بنضاعف (×2) بدل ما نزود خانة خانة؟**
-عشان الـ resize غالي (بينسخ كل العناصر). لو كبّرنا خانة واحدة كل مرة، كل `append` هيبقى `O(n)`. بالمضاعفة، الـ resize بيحصل **نادراً** (عند 2 ثم 4 ثم 8 ثم 16 …)، فمتوسط تكلفة الـ `append` بيبقى `O(1)` — ده اسمه **Amortized O(1)**.
-
-| رقم الـ append | `size` قبل | بيحصل إيه | `size` بعد |
+| Append # | `size` before | What happens | `size` after |
 |:-:|:-:|---|:-:|
-| 1 | 2 | فيه مكان | 2 |
-| 2 | 2 | فيه مكان | 2 |
-| 3 | 2 | **resize** → ×2 | 4 |
-| 4 | 4 | فيه مكان | 4 |
-| 5 | 4 | **resize** → ×2 | 8 |
+| 1 | 2 | room available | 2 |
+| 2 | 2 | room available | 2 |
+| 3 | 2 | **resize** ×2 | 4 |
+| 4 | 4 | room available | 4 |
+| 5 | 4 | **resize** ×2 | 8 |
+
+### 4.2 Line-by-line differences
+
+| Part | `Static_Array.cpp` | `Dynamic_Array.cpp` |
+|---|---|---|
+| Class name | `Static_Array_Number` | `Dynamic_Array_Number` |
+| Constructor `size` | `size >= 0` (can be `0`) | `size >= 1` (needs one slot to grow) |
+| Private helpers | none | `resize()` and `ensure_capacity()` |
+| `append` | returns `0` when full | grows automatically, always returns `1` |
+| `insert` / `insert_sorted` | fail when full | grow automatically |
+| `set_array` | returns `0` if `newLength > size` | grows with `ensure_capacity` |
+| `merge` / `union_array` | new capacity = `size + arr2.size` | new capacity = `length + arr2.length` (at least `1`) |
+| `intersection` | capacity = `min(size, arr2.size)` | same |
+| `difference` | capacity unchanged | same |
+| Failure message in `main` | `"Array is full!"` | `"Failed to add number!"` (practically unreachable) |
+| Welcome title | `Welcome To Array Application` | `Welcome To Dynamic Array Application` |
+| Capacity prompt | `Enter Array Capacity` | `Enter Starting Capacity` |
+
+All other functions (`delete_index`, `linear_search`, `binary_search`, `get`, `set`, `max`, `min`, `sum`, `average`, `reverse`, `is_sorted`, `rearrange`, `display`, ...) are **identical** in both files.
 
 ---
 
-## 5. الـ Class من جوه
+## 5. Class Internals
 
-### 5.1 الـ Constructor
+### 5.1 Constructor
 
 ```cpp
 Static_Array_Number(int Size, int Length, int* arr)
 ```
 
-| الـ Parameter | معناه |
+| Parameter | Meaning |
 |---|---|
-| `Size` | السعة المطلوبة |
-| `Length` | عدد العناصر اللي هتتنسخ من `arr` في البداية |
-| `arr` | الـ array المصدر (ممكن `nullptr` ← يبقى الـ array فاضية) |
+| `Size` | Requested capacity |
+| `Length` | Number of elements to copy from `arr` initially |
+| `arr` | Source array (`nullptr` means start empty) |
 
-الـ constructor بيحمي نفسه من القيم الغلط:
-- لو `Length` سالب ← بيبقى `0`.
-- لو `Length > size` ← بيتقص لـ `size`.
-- لو `arr == nullptr` ← `length = 0`.
+Input protection: a negative `Length` becomes `0`, `Length > size` is clamped to `size`, and `arr == nullptr` gives `length = 0`.
+In `main()` it is called as `arr(size, 0, nullptr)`, an empty array with the capacity the user chose.
 
-في `main()` بيتنادى كده: `arr(size, 0, nullptr)` يعني **array فاضية بالسعة اللي المستخدم اختارها**.
-
-### 5.2 الـ Destructor
+### 5.2 Destructor
 
 ```cpp
 ~Static_Array_Number() { delete[] Array; }
 ```
-بيرجّع الميموري اللي اتحجزت بـ `new[]` أول ما الـ object يموت، عشان ميحصلش **Memory Leak**.
 
-### 5.3 الـ Copy Constructor و الـ Assignment Operator (Deep Copy)
+Releases the memory allocated with `new[]` when the object dies, which prevents a **memory leak**.
 
-من غيرهم، C++ بتعمل **Shallow Copy** (بتنسخ الـ pointer بس مش الداتا)، وده كارثة:
+### 5.3 Copy Constructor and Assignment Operator (Deep Copy)
 
-```
-❌ Shallow Copy                          ✅ Deep Copy (اللي الكود بيعمله)
+Without them C++ makes a **shallow copy** (copies the pointer, not the data) and two objects end up sharing one block of memory. When one is destroyed the other points to freed memory. The class performs a **deep copy** so each object owns its data.
 
- a.Array ──►  [1, 2, 3]                   a.Array ──►  [1, 2, 3]
- b.Array ──┘  (نفس الميموري!)             b.Array ──►  [1, 2, 3]   (نسخة مستقلة)
+<p align="center"><img src="animations/array_deep_copy.gif" width="720" alt="Deep copy vs shallow copy"></p>
 
- لما a تموت وتعمل delete[]               كل object له ميموري خاصة بيه
- b بيشاور على ميموري ممسوحة 💥            تعديل واحد مش بيأثر على التاني
-```
+Assignment operator (`b = a`) steps:
 
-تجربة حقيقية على الكود:
-
-```
-c1 = [1]
-c2 = c1        // Copy Constructor
-c2[0] = 42
-→  c1[0] = 1 ,  c2[0] = 42      ✅ مستقلين
-```
-
-الـ **Assignment Operator** (`b = a`) خطواته:
-
-```
-1. if (this == &other) return *this;   ← حماية من b = b
-2. delete[] Array;                     ← امسح الميموري القديمة بتاعتي
+```text
+1. if (this == &other) return *this;   // guard against b = b
+2. delete[] Array;                     // release my old memory
 3. size = other.size; length = other.length;
-4. Array = new int[size];              ← احجز ميموري جديدة
-5. انسخ العناصر واحد واحد
-6. return *this;                       ← عشان تقدر تكتب a = b = c
+4. Array = new int[size];              // allocate new memory
+5. copy the elements one by one
+6. return *this;                       // allows a = b = c
 ```
 
-الـ 3 مع بعض (Destructor + Copy Constructor + Assignment) اسمهم **Rule of Three**.
+Destructor + Copy Constructor + Assignment Operator together are known as the **Rule of Three**.
 
-### 5.4 الدوال الخاصة (Dynamic فقط)
+### 5.3.1 Private helpers (Dynamic only)
 
-| الدالة | وظيفتها |
+| Function | Role |
 |---|---|
-| `resize(newSize)` | بتحجز array أكبر، تنسخ فيها القديم، تمسح القديمة. **مبتصغّرش أبداً** (`if newSize <= size return`). |
-| `ensure_capacity(required)` | بتضاعف `size` لحد ما يكفي `required`، وبعدين تنادي `resize`. |
+| `resize(newSize)` | Allocates a bigger array, copies the old one, frees the old one. **Never shrinks** (`if newSize <= size return`). |
+| `ensure_capacity(required)` | Doubles `size` until it is enough for `required`, then calls `resize`. |
 
-### 5.5 الـ Getters
+### 5.4 Getters and `set_array`
 
-| الدالة | بترجّع |
+| Function | Returns |
 |---|---|
-| `get_size()` | السعة |
-| `get_length()` | عدد العناصر |
-| `get_array()` | `const int*` — وصول للقراءة فقط |
-| `set_array(arr, newLength)` | بتستبدل المحتوى بنسخة من `arr` |
+| `get_size()` | Capacity |
+| `get_length()` | Number of elements |
+| `get_array()` | `const int*` for read-only access |
+| `set_array(arr, newLength)` | Replaces the contents with a copy of `arr` |
 
 ---
 
-## 6. العمليات الأساسية
+## 6. Basic Operations
 
-### 6.1 `append(value)` — إضافة في الآخر
+### 6.1 `append(value)`
 
-بتحط القيمة في `Array[length]` وتزوّد `length`. تكلفتها `O(1)`.
+Writes the value at `Array[length]` and increments `length`. Cost: `O(1)`. See the animations in [section 4.1](#41-append-when-the-array-is-full).
 
-### 6.2 `insert(index, value)` — إضافة في مكان معين
+### 6.2 `insert(index, value)`
 
-شرط الـ index: `0 ≤ index ≤ length` (يعني تقدر تضيف في الآخر كمان).
-بتزحزح كل العناصر من `index` لآخر الـ array **يمين** خانة، وبعدين تحط القيمة.
+Valid range: `0 ≤ index ≤ length`. Shifts the elements from `index` to the end one slot **right**, then writes the value.
 
-### 🎬 أنيميشن: `insert(1, 99)` على `[10, 20, 30]` بسعة 5
+<p align="center"><img src="animations/array_insert.gif" width="720" alt="insert"></p>
 
-```
-index        0    1    2    3    4
-Frame 0   │ 10 │ 20 │ 30 │  _ │  _ │    البداية  (length=3)
-Frame 1   │ 10 │ 20 │ 30 │ 30 │  _ │    i=3 : Array[3] = Array[2]
-Frame 2   │ 10 │ 20 │ 20 │ 30 │  _ │    i=2 : Array[2] = Array[1]
-Frame 3   │ 10 │ 99 │ 20 │ 30 │  _ │    Array[1] = 99   ،   length = 4   ✅
-```
+| Frame | State | What happened |
+|:-:|---|---|
+| 0 | `│10│20│30│_│_│` | Start, `length = 3` |
+| 1 | `│10│20│30│30│_│` | `Array[3] = Array[2]` |
+| 2 | `│10│20│20│30│_│` | `Array[2] = Array[1]` |
+| 3 | `│10│99│20│30│_│` | `Array[1] = 99`, `length = 4` |
 
-> الزحزحة بتتعمل **من الآخر للأول** عشان منكتبش فوق قيمة لسه محتاجينها.
+> [!NOTE]
+> Shifting goes **from the end to the start** so no value is overwritten before it has been moved.
 
-### 6.3 `insert_sorted(value)` — إضافة مع الحفاظ على الترتيب
+### 6.3 `insert_sorted(value)`
 
-**شرط:** الـ array لازم تكون مرتبة تصاعدياً من قبل كده.
-بتبدأ من آخر عنصر وتزحزح كل عنصر **أكبر** من القيمة يمين، وبعدين تحط القيمة في الفجوة.
+**Precondition:** the array is already sorted ascending. Starting from the last element, every element **greater** than the value is shifted right, then the value is written into the gap.
 
-### 🎬 أنيميشن: `insert_sorted(20)` على `[10, 30, 50]`
+<p align="center"><img src="animations/array_insert_sorted.gif" width="720" alt="insert_sorted"></p>
 
-```
-Frame 0   │ 10 │ 30 │ 50 │  _ │      i = 2 (آخر عنصر)
-Frame 1   │ 10 │ 30 │ 50 │ 50 │      Array[2]=50 > 20  → زحزح (i=1)
-Frame 2   │ 10 │ 30 │ 30 │ 50 │      Array[1]=30 > 20  → زحزح (i=0)
-Frame 3   │ 10 │ 30 │ 30 │ 50 │      Array[0]=10 > 20 ؟ لأ → وقّف
-Frame 4   │ 10 │ 20 │ 30 │ 50 │      Array[i+1] = Array[1] = 20   ✅
-```
+### 6.4 `delete_index(index)`
 
-### 6.4 `delete_index(index)` — حذف
+Returns the **deleted value**, or `-1` for an invalid index. Shifts elements **left** to close the gap, then decrements `length`.
 
-بترجّع **القيمة المحذوفة**، أو `-1` لو الـ index غلط. بتزحزح العناصر **شمال** عشان تقفل الفجوة.
+<p align="center"><img src="animations/array_delete.gif" width="720" alt="delete_index"></p>
 
-### 🎬 أنيميشن: `delete_index(1)` على `[10, 99, 20, 30]`
+The last slot `(30)` stays in memory but is now outside `length`, so it counts as removed.
 
-```
-index        0    1    2    3    4
-Frame 0   │ 10 │ 99 │ 20 │ 30 │  _ │    x = Array[1] = 99   (بنحفظ القيمة)
-Frame 1   │ 10 │ 20 │ 20 │ 30 │  _ │    i=1 : Array[1] = Array[2]
-Frame 2   │ 10 │ 20 │ 30 │ 30 │  _ │    i=2 : Array[2] = Array[3]
-Frame 3   │ 10 │ 20 │ 30 │(30)│  _ │    length-- → 3     return 99   ✅
-                          └── برة الـ length، يعتبر مش موجود
-```
+### 6.5 `get(index, value)` and `set(index, value)`
 
-### 6.5 `get(index, value)` و `set(index, value)`
-
-| الدالة | وظيفتها | بترجّع |
+| Function | Purpose | Returns |
 |---|---|---|
-| `get(index, value&)` | بتقرا العنصر وتحطه في `value` (by reference) | `true` / `false` |
-| `set(index, value)` | بتغيّر قيمة عنصر موجود | `1` / `0` |
+| `get(index, value&)` | Reads the element into `value` (by reference) | `true` / `false` |
+| `set(index, value)` | Changes an existing element | `1` / `0` |
 
-الاتنين `O(1)`، وبيتأكدوا إن `0 ≤ index < length`.
+Both are `O(1)` (direct indexing) and check `0 ≤ index < length`.
 
----
-
-## 7. البحث
-
-### 7.1 `linear_search(key)` — بحث خطي
-
-بيعدّي على العناصر واحد واحد من الأول. مبيشترطش ترتيب. بيرجّع الـ index أو `-1`.
-
-### 🎬 أنيميشن: دوّر على `7` في `[4, 9, 7, 2]`
-
-```
-index     0    1    2    3
-value     4    9    7    2
-
-Step 1    ^                   Array[0] = 4  ==  7 ?  no
-Step 2         ^              Array[1] = 9  ==  7 ?  no
-Step 3              ^         Array[2] = 7  ==  7 ?  YES -> return 2
-```
-
-### 7.2 `binary_search(key)` — بحث ثنائي
-
-**شرط:** الـ array لازم تكون **مرتبة تصاعدياً**. كل خطوة بتقسم المساحة للنص.
-الكود بيحسب `mid = low + (high - low) / 2` بدل `(low + high) / 2` عشان يتفادى الـ **Integer Overflow**.
-
-### 🎬 أنيميشن: دوّر على `11` في `[1, 3, 5, 7, 9, 11, 13]`
-
-```
-index     0    1    2    3    4    5    6
-value     1    3    5    7    9   11   13
-
-Step 1    L              M              H    low=0 high=6 mid=3
-          1    3    5    7    9   11   13
-          Array[3] = 7 < 11  ->  low = mid + 1 = 4
-
-Step 2                        L    M    H    low=4 high=6 mid=5
-          1    3    5    7    9   11   13
-          Array[5] = 11 == 11  ->  FOUND at index 5
-```
+<p align="center"><img src="animations/array_get_set.gif" width="720" alt="get and set"></p>
 
 ---
 
-## 8. العمليات الحسابية
+## 7. Searching
 
-| الدالة | بترجّع | ملاحظات |
+### 7.1 `linear_search(key)`
+
+Scans from the first element. No ordering required. Returns the index or `-1`.
+
+<p align="center"><img src="animations/array_linear_search.gif" width="720" alt="linear search"></p>
+
+### 7.2 `binary_search(key)`
+
+**Precondition:** the array is sorted ascending. Each step discards half of the remaining range. The code uses `mid = low + (high - low) / 2` instead of `(low + high) / 2` to avoid **integer overflow**.
+
+<p align="center"><img src="animations/array_binary_search.gif" width="720" alt="binary search"></p>
+
+---
+
+## 8. Mathematical Operations
+
+| Function | Returns | Notes |
 |---|---|---|
-| `max()` | أكبر قيمة | بترجّع `-1` لو الـ array فاضية |
-| `min()` | أصغر قيمة | بترجّع `-1` لو الـ array فاضية |
-| `sum()` | المجموع كـ `long long` | `long long` عشان المجموع ميعملش overflow بسهولة |
-| `average()` | المتوسط كـ `double` | بترجّع `0.0` لو فاضية |
+| `max()` | Largest value | `-1` if empty |
+| `min()` | Smallest value | `-1` if empty |
+| `sum()` | Total as `long long` | `long long` avoids overflow |
+| `average()` | Mean as `double` | `0.0` if empty |
 
-`average()` بتحوّل المجموع لـ `double` قبل القسمة (`static_cast<double>`) عشان تتفادى **Integer Division** (يعني `7/2` تطلع `3.5` مش `3`).
+`average()` converts the sum with `static_cast<double>` before dividing to avoid **integer division** (`7/2` gives `3.5`, not `3`). In `main()` an empty array is checked first and prints `"Array is empty!"`.
 
-مثال على `[5, 2, 8, -1, -3, -7]`:
-
-```
-max = 8     min = -7     sum = 4     average = 4 / 6 = 0.666667
-```
-
-في `main()` بيتم فحص `get_length() == 0` الأول ويطبع `"Array is empty!"` قبل ما ينادي `max/min/average`.
+<p align="center"><img src="animations/array_max_sum.gif" width="720" alt="max, sum, average"></p>
 
 ---
 
-## 9. عمليات على الـ Array
+## 9. Array Operations
 
-### 9.1 `reverse()` — عكس الـ array
+### 9.1 `reverse()`
 
-مؤشرين (`start` من الأول، `end` من الآخر)، بيبدلوا القيم ويتقابلوا في النص. `O(n)` ومن غير array إضافية.
+Two pointers (`start` from the front, `end` from the back) swap values until they meet. `O(n)` with no extra array.
 
-### 🎬 أنيميشن: `reverse()` على `[1, 2, 3, 4, 5]`
+<p align="center"><img src="animations/array_reverse.gif" width="720" alt="reverse"></p>
 
-```
-index     0    1    2    3    4
-start     1    2    3    4    5    start=0 , end=4
-          S                   E
+### 9.2 `is_sorted()`
 
-swap 1    5    2    3    4    1    swap(Array[0], Array[4])
-               S         E         start=1 , end=3
+Compares each element with the next. The first time `Array[i] > Array[i+1]` it returns `0`; if it reaches the end it returns `1`.
 
-swap 2    5    4    3    2    1    swap(Array[1], Array[3])
-                   SE              start=2 , end=2
+<p align="center"><img src="animations/array_is_sorted.gif" width="720" alt="is_sorted"></p>
 
-done      5    4    3    2    1    start >= end  ->  stop
+```text
+[1, 2, 2, 5]  ->  1   (sorted, duplicates allowed)
+[1, 5, 3, 9]  ->  0   (5 > 3)
 ```
 
-### 9.2 `is_sorted()` — هل الـ array مرتبة؟
+### 9.3 `rearrange()`
 
-بيقارن كل عنصر باللي بعده؛ أول ما يلاقي `Array[i] > Array[i+1]` بيرجّع `0`. لو عدّى على الكل بيرجّع `1`.
+Moves all **negative** numbers to the front and non-negative numbers (including zero) to the back using two pointers `i` and `j`. It does **not** preserve the original order inside each group.
 
-```
-[1, 2, 2, 5]  →  1 (مرتبة، التكرار مسموح)
-[1, 5, 3, 9]  →  0 (5 > 3)
-```
-
-### 9.3 `rearrange()` — السالب الأول والموجب بعدين
-
-بتحرّك كل الأرقام **السالبة** ناحية البداية، والموجبة (والصفر) ناحية الآخر، بمؤشرين `i` و `j` من الطرفين. **مبتحافظش على الترتيب الأصلي** داخل كل مجموعة.
-
-### 🎬 أنيميشن: `rearrange()` على `[5, -3, 8, -1, 2, -7]`
-
-```
-index     0    1    2    3    4    5
-start     5   -3    8   -1    2   -7
-
-find 1    i                        j    i=0 (first non-negative) , j=5 (last negative)
-swap 1   -7   -3    8   -1    2    5    swap(Array[0], Array[5])
-
-find 2              i    j              i=2 (first non-negative) , j=3 (last negative)
-swap 2   -7   -3   -1    8    2    5    swap(Array[2], Array[3])
-
-find 3              j    i              i=3 (first non-negative) , j=2 (last negative)
-         -7   -3   -1    8    2    5    i >= j  ->  stop
-
-done     -7   -3   -1    8    2    5
-```
+<p align="center"><img src="animations/array_rearrange.gif" width="720" alt="rearrange"></p>
 
 ---
 
-## 10. عمليات المجموعات
+## 10. Set Operations
 
-> ⚠️ **شروط مهمة:**
-> 1. العمليات دي كلها بتفترض إن **الـ array الأولى والتانية مرتبتين تصاعدياً**. الكود **مبيتحققش** من ده.
-> 2. العملية **بتعدّل الـ array الأصلية (`arr`) نفسها** وبتحط النتيجة فيها. الـ array التانية (`arr2`) بتتعمل مؤقتاً جوه `main()` وبتتمسح بعد العملية.
+> [!WARNING]
+> 1. All four operations **assume both arrays are sorted ascending**. The code does **not** verify this.
+> 2. The operation **modifies the original array (`arr`)** and stores the result in it. `arr2` is created temporarily in `main()` and destroyed afterwards.
 
-كلهم بيستخدموا تقنية **Two Pointers** (مؤشرين `i` و `j`) وكل واحد بيمشي على array ببطء، فالتكلفة `O(n + m)` بدل `O(n × m)`.
+All of them use the **two pointers** technique, so the cost is `O(n + m)` instead of `O(n × m)`.
 
-الأمثلة تحت كلها على:
+Every example below uses:
 
-```
+```text
 A = [1, 3, 5, 7, 9]        B = [3, 4, 5, 6, 7]
 ```
 
-### 10.1 `merge` — دمج الاتنين (مع الاحتفاظ بالتكرار)
+### 10.1 `merge`: keep duplicates
 
-قاعدة بسيطة: قارن `A[i]` و `B[j]` وخد الأصغر. لو متساويين الكود بياخد من `B`.
+Compare `A[i]` and `B[j]` and take the smaller one. When they are equal the code takes from `B`.
 
-| # | الخطوة | النتيجة لحد دلوقتي |
-|:-:|---|---|
-| 1 | 1 < 3  -> خد 1 من A | `1` |
-| 2 | 3 >= 3 -> خد 3 من B | `1 3` |
-| 3 | 3 < 4  -> خد 3 من A | `1 3 3` |
-| 4 | 5 >= 4 -> خد 4 من B | `1 3 3 4` |
-| 5 | 5 >= 5 -> خد 5 من B | `1 3 3 4 5` |
-| 6 | 5 < 6  -> خد 5 من A | `1 3 3 4 5 5` |
-| 7 | 7 >= 6 -> خد 6 من B | `1 3 3 4 5 5 6` |
-| 8 | 7 >= 7 -> خد 7 من B | `1 3 3 4 5 5 6 7` |
-| 9 | B خلصت -> انسخ 7 من A | `1 3 3 4 5 5 6 7 7` |
-| 10 | B خلصت -> انسخ 9 من A | `1 3 3 4 5 5 6 7 7 9` |
+<p align="center"><img src="animations/array_merge.gif" width="760" alt="merge"></p>
 
-**النتيجة: `1 3 3 4 5 5 6 7 7 9`**
+**Result:** `1 3 3 4 5 5 6 7 7 9`
 
-### 10.2 `union_array` — الاتحاد (من غير تكرار)
+### 10.2 `union_array`: no duplicates
 
-زي الـ merge، بس قبل ما يضيف قيمة بيشيّك إنها **مش نفس آخر قيمة اتضافت**.
+Same as merge, but a value is added only if it differs from the **last value added**.
 
-| # | الخطوة | النتيجة لحد دلوقتي |
-|:-:|---|---|
-| 1 | 1 < 3 -> القيمة 1 (اتضاف) | `1` |
-| 2 | 3 == 3 -> القيمة 3 (اتضاف) | `1 3` |
-| 3 | 5 > 4 -> القيمة 4 (اتضاف) | `1 3 4` |
-| 4 | 5 == 5 -> القيمة 5 (اتضاف) | `1 3 4 5` |
-| 5 | 7 > 6 -> القيمة 6 (اتضاف) | `1 3 4 5 6` |
-| 6 | 7 == 7 -> القيمة 7 (اتضاف) | `1 3 4 5 6 7` |
-| 7 | B خلصت -> القيمة 9 (اتضاف) | `1 3 4 5 6 7 9` |
+<p align="center"><img src="animations/array_union.gif" width="760" alt="union"></p>
 
-**النتيجة: `1 3 4 5 6 7 9`**
+**Result:** `1 3 4 5 6 7 9`
 
-### 10.3 `intersection` — التقاطع (المشترك بس)
+### 10.3 `intersection`: common values only
 
-بيضيف القيمة **بس لو موجودة في الاتنين**. لو أصغر في أي ناحية بيتخطاها.
+A value is added only if it exists in **both** arrays; otherwise the smaller side is skipped.
 
-| # | الخطوة | النتيجة لحد دلوقتي |
-|:-:|---|---|
-| 1 | 1 < 3 -> تجاهل 1 (i++) | (فاضية) |
-| 2 | 3 == 3 -> مشترك! اتضاف | `3` |
-| 3 | 5 > 4 -> تجاهل 4 (j++) | `3` |
-| 4 | 5 == 5 -> مشترك! اتضاف | `3 5` |
-| 5 | 7 > 6 -> تجاهل 6 (j++) | `3 5` |
-| 6 | 7 == 7 -> مشترك! اتضاف | `3 5 7` |
+<p align="center"><img src="animations/array_intersection.gif" width="760" alt="intersection"></p>
 
-**النتيجة: `3 5 7`**
+**Result:** `3 5 7`
 
-> السعة بعد التقاطع بتبقى `min(size, arr2.size)` — وده الحد الأقصى المنطقي لعدد العناصر المشتركة.
+> The capacity after an intersection is `min(size, arr2.size)`, the logical upper bound for common elements.
 
-### 10.4 `difference` — الفرق (`A − B`)
+### 10.4 `difference` (`A − B`)
 
-بيرجّع العناصر **اللي في `A` ومش في `B`**.
+Returns the elements that are in `A` and **not** in `B`.
 
-| # | الخطوة | النتيجة لحد دلوقتي |
-|:-:|---|---|
-| 1 | 1 < 3 -> 1 مش في B -> اتضاف | `1` |
-| 2 | 3 == 3 -> موجود في B -> اتحذف | `1` |
-| 3 | 5 > 4 -> تجاهل 4 (j++) | `1` |
-| 4 | 5 == 5 -> موجود في B -> اتحذف | `1` |
-| 5 | 7 > 6 -> تجاهل 6 (j++) | `1` |
-| 6 | 7 == 7 -> موجود في B -> اتحذف | `1` |
-| 7 | B خلصت -> 9 اتضاف | `1 9` |
+<p align="center"><img src="animations/array_difference.gif" width="760" alt="difference"></p>
 
-**النتيجة: `1 9`**
-
-### 📊 ملخص العمليات الأربعة على نفس الـ arrays
-
-| العملية | النتيجة | بتحتفظ بالتكرار؟ |
-|---|---|:-:|
-| `merge` | `1 3 3 4 5 5 6 7 7 9` | ✅ آه |
-| `union_array` | `1 3 4 5 6 7 9` | ❌ لأ |
-| `intersection` | `3 5 7` | ❌ |
-| `difference` (A − B) | `1 9` | ❌ |
+**Result:** `1 9`
 
 ---
 
-## 11. شرح `main()` والـ Menu
+## 11. The Menu Program
 
-### 11.1 خريطة الـ Menu
+### 11.1 Menu map
 
-```
-Welcome  →  "Enter Capacity:"  →  arr(size, 0, nullptr)
-                │
-                ▼
-            MAIN MENU
-            ├── 1  Basic Operations
-            │      ├─ 1 Append Number
-            │      ├─ 2 Insert Number
-            │      ├─ 3 Insert Sorted
-            │      ├─ 4 Delete Number
-            │      ├─ 5 Get Number
-            │      ├─ 6 Set Number
-            │      └─ 7 Back
-            ├── 2  Search Operations
-            │      ├─ 1 Linear Search
-            │      ├─ 2 Binary Search
-            │      └─ 3 Back
-            ├── 3  Mathematical Operations
-            │      ├─ 1 Maximum     2 Minimum
-            │      ├─ 3 Sum         4 Average
-            │      └─ 5 Back
-            ├── 4  Array Operations
-            │      ├─ 1 Reverse
-            │      ├─ 2 Check If Sorted
-            │      ├─ 3 Rearrange Negative / Positive
-            │      └─ 4 Back
-            ├── 5  Set Operations
-            │      ├─ 1 Merge       2 Union
-            │      ├─ 3 Intersection   4 Difference
-            │      └─ 5 Back
-            ├── 6  Array Information
-            │      ├─ 1 Display
-            │      ├─ 2 Get Capacity
-            │      ├─ 3 Get Length
-            │      └─ 4 Back
-            └── 7  Exit
+```text
+Welcome  ->  "Enter Capacity:"  ->  arr(size, 0, nullptr)
+                 |
+                 v
+             MAIN MENU
+             ├── 1  Basic Operations
+             │      ├─ 1 Append    2 Insert    3 Insert Sorted
+             │      ├─ 4 Delete    5 Get       6 Set
+             │      └─ 7 Back
+             ├── 2  Search Operations
+             │      ├─ 1 Linear    2 Binary
+             │      └─ 3 Back
+             ├── 3  Mathematical Operations
+             │      ├─ 1 Max   2 Min   3 Sum   4 Average
+             │      └─ 5 Back
+             ├── 4  Array Operations
+             │      ├─ 1 Reverse   2 Is Sorted   3 Rearrange
+             │      └─ 4 Back
+             ├── 5  Set Operations
+             │      ├─ 1 Merge   2 Union   3 Intersection   4 Difference
+             │      └─ 5 Back
+             ├── 6  Array Information
+             │      ├─ 1 Display   2 Capacity   3 Length
+             │      └─ 4 Back
+             └── 7  Exit
 ```
 
-### 11.2 إزاي الـ Menu شغال؟
+### 11.2 How the menu works
 
-كل قائمة عبارة عن **`do { ... } while (choice != Back)`** جوه **`do { ... } while (mainChoice != 7)`**:
+Each sub-menu is a `do { ... } while (choice != Back)` inside the main `do { ... } while (mainChoice != 7)`:
 
-```
-do {                                    ← الـ Main Menu
-    اطبع القائمة  →  اقرا mainChoice
+```text
+do {                                    // Main Menu
+    print menu -> read mainChoice
     if (mainChoice == 1) {
-        do {                            ← الـ Sub Menu
-            اطبع القائمة الفرعية → اقرا choice
-            نفّذ العملية
-        } while (choice != 7);          ← لحد ما يختار "Back"
+        do {                            // Sub Menu
+            print sub menu -> read choice
+            run the operation
+        } while (choice != 7);          // until "Back"
     }
     else if (mainChoice == 2) { ... }
     ...
-} while (mainChoice != 7);              ← لحد ما يختار "Exit"
+} while (mainChoice != 7);              // until "Exit"
 ```
 
 ### 11.3 `read_input(int& value)`
@@ -641,68 +467,47 @@ void read_input(int& value)
     }
 }
 ```
-بتقرا رقم صحيح. لو المستخدم كتب حروف أو أي حاجة مش رقم البرنامج **بيقفل برسالة خطأ** بدل ما يدخل في loop لا نهائي.
 
-### 11.4 إزاي الـ Set Operations بتتنفذ في `main()`؟
+If the user types letters or anything that is not a number, the program **exits with an error** instead of looping forever.
 
-```
-1. اسأل: "second array capacity"   →  Dynamic_Array_Number arr2(size2, 0, nullptr)
-2. اسأل: "How many numbers?"       →  n
-3. كرر n مرة:  اقرا رقم  →  arr2.append(value)
-4. arr.merge(arr2)   (أو union / intersection / difference)
-5. اطبع النتيجة  arr.display()
-6. arr2 بتتمسح أوتوماتيك (الـ destructor) أول ما الـ block يخلص
+### 11.4 How set operations run in `main()`
+
+```text
+1. Ask "second array capacity"   ->  arr2(size2, 0, nullptr)
+2. Ask "How many numbers?"       ->  n
+3. Repeat n times: read a number ->  arr2.append(value)
+4. arr.merge(arr2)   (or union / intersection / difference)
+5. Print the result with arr.display()
+6. arr2 is destroyed automatically (destructor) at the end of the block
 ```
 
 ---
 
-## 12. جدول التعقيد Big-O
+## 12. Sample Runs
 
-`n` = عدد عناصر الـ array، `m` = عدد عناصر الـ array التانية.
+**Dynamic** (starting capacity `2`, appending `10, 20, 30, 40, 50`):
 
-| العملية | Static | Dynamic |
-|---|:-:|:-:|
-| `get` / `set` | O(1) | O(1) |
-| `append` | O(1) | O(1) متوسط (Amortized)، O(n) في لحظة الـ resize |
-| `insert` | O(n) | O(n) |
-| `insert_sorted` | O(n) | O(n) |
-| `delete_index` | O(n) | O(n) |
-| `linear_search` | O(n) | O(n) |
-| `binary_search` | O(log n) | O(log n) |
-| `max` / `min` / `sum` / `average` | O(n) | O(n) |
-| `reverse` / `is_sorted` / `rearrange` | O(n) | O(n) |
-| `merge` / `union` / `intersection` / `difference` | O(n + m) | O(n + m) |
-| `display` | O(n) | O(n) |
-
----
-
-## 13. مثال تشغيل حقيقي
-
-نفس الخطوات على النسختين: عمل array صغيرة ثم إضافة أرقام بـ `Append`.
-
-**Dynamic** (السعة الابتدائية `2`، أضفنا `10, 20, 30, 40, 50`):
-
-```
+```text
 Enter Starting Capacity: 2
-Number added successfully.      ← 10
-Number added successfully.      ← 20
-Number added successfully.      ← 30   (resize: 2 → 4)
-Number added successfully.      ← 40
-Number added successfully.      ← 50   (resize: 4 → 8)
+Number added successfully.      <- 10
+Number added successfully.      <- 20
+Number added successfully.      <- 30   (resize: 2 -> 4)
+Number added successfully.      <- 40
+Number added successfully.      <- 50   (resize: 4 -> 8)
 
 Array Capacity = 8
 Array Length   = 5
 Array: 10 20 30 40 50
 ```
 
-**Static** (السعة `3`، حاولنا نضيف `10, 20, 30, 40`):
+**Static** (capacity `3`, trying to append `10, 20, 30, 40`):
 
-```
+```text
 Enter Array Capacity: 3
-Number added successfully.      ← 10
-Number added successfully.      ← 20
-Number added successfully.      ← 30
-Array is full!                  ← 40  ❌
+Number added successfully.      <- 10
+Number added successfully.      <- 20
+Number added successfully.      <- 30
+Array is full!                  <- 40  (rejected)
 
 Array Capacity = 3
 Array Length   = 3
@@ -711,27 +516,81 @@ Array: 10 20 30
 
 ---
 
-## 14. ملاحظات من مراجعة الكود
+## 13. Code Review Notes
 
-راجعت الملفين بالكامل وجربتهم. **الكودين بيتعملهم compile من غير أي warnings** مع `-Wall -Wextra`، وشغّلت العمليات (الأساسية والبحث والحسابية والـ Set Operations والـ copy/assignment والحالات الحدّية زي الـ array الفاضية) مع `AddressSanitizer` و `UndefinedBehaviorSanitizer` ومفيش memory leaks أو أخطاء في الذاكرة. المنطق صح، والنتايج في الأنيميشن اللي فوق هي مخرجات حقيقية من الكود.
+Both files compile without warnings under `-Wall -Wextra`, the logic is correct, and the animations follow the exact execution path of the code. The points below are **improvements**, not bugs that break the program.
 
-الملاحظات دي **تحسينات**، مش أخطاء بتكسر البرنامج:
-
-| # | الملاحظة | التفاصيل واقتراح الحل |
+| # | Note | Details and suggested fix |
 |:-:|---|---|
-| 1 | **`delete_index` بترجّع `-1` للخطأ** | لو القيمة المحذوفة نفسها `-1`، البرنامج هيطبع `Invalid index!` غلط (جربتها وبتحصل). الحل: نفس أسلوب `get`، بـ `bool delete_index(int index, int& removed)`. |
-| 2 | **`#include` ناقصين** | الكود بيستخدم `std::swap` و `std::min` من غير `#include <algorithm>` / `<utility>`. اشتغل على g++، بس ممكن يفشل على compilers تانية. الحل: ضيف `#include <algorithm>`. |
-| 3 | **الشرط "مرتبة" مش متحقق منه** | `binary_search` و `insert_sorted` و `merge` و `union_array` و `intersection` و `difference` بيدّوا نتيجة غلط **من غير أي تحذير** لو الـ array مش مرتبة. الحل: نادي `is_sorted()` الأول أو اطبع تحذير. |
-| 4 | **اسم `Static_Array`** | الـ class بيحجز ذاكرته بـ `new` (Heap) وكمان `merge` و `union_array` بيغيروا السعة. فهي أقرب لـ "Fixed-Capacity Array" منها لـ Static بالمعنى الحرفي. مجرد ملاحظة في التسمية. |
-| 5 | **قيم بتضيع بصمت في Set Operations (Static)** | لو `arr2` سعتها أقل من `n`، `arr2.append(value)` بتفشل وقيمتها مبتتخزنش، والنتيجة بترجع من غير ما حد يعرف. الحل: اطبع رسالة لو `append` رجّعت `0`. |
-| 6 | **`max()` و `min()` بيرجعوا `-1` للـ array الفاضية** | ممكن تتلخبط مع قيمة حقيقية. في `main()` ده متأمّن بفحص `get_length() == 0`، بس لو استخدمت الـ class في مكان تاني خلّي بالك. |
-| 7 | **الـ Assignment Operator مش Exception-Safe** | بيعمل `delete[]` **قبل** `new[]`، فلو `new` فشلت الـ object بيبقى في حالة بايظة. الحل المعروف: **Copy-and-Swap idiom**. |
-| 8 | **رسالة الخروج** | في `Dynamic_Array.cpp` الرسالة بتقول `Array App` مش `Dynamic Array App` — ممكن توحّدها مع الترحيب. |
+| 1 | `delete_index` returns `-1` on error | If the deleted value is itself `-1`, `main()` prints `Invalid index!` incorrectly. Fix: `bool delete_index(int index, int& removed)`, same style as `get`. |
+| 2 | Missing `#include` | `std::swap` and `std::min` are used without `#include <algorithm>`. It works on g++ but may fail on other compilers. |
+| 3 | "Sorted" precondition is not checked | `binary_search`, `insert_sorted`, `merge`, `union_array`, `intersection`, and `difference` silently give wrong results on unsorted input. Fix: call `is_sorted()` first or print a warning. |
+| 4 | The name `Static_Array` | The class allocates with `new` (heap) and `merge` / `union_array` change its capacity, so it is closer to a "Fixed-Capacity Array". |
+| 5 | Silent data loss in Static set operations | If `arr2` has less capacity than `n`, `arr2.append(value)` fails and the value is dropped. Fix: print a message when `append` returns `0`. |
+| 6 | `max()` / `min()` return `-1` for empty arrays | Can be confused with a real value. `main()` protects against it with `get_length() == 0`. |
+| 7 | Assignment operator is not exception-safe | It calls `delete[]` **before** `new[]`; if `new` throws, the object is left invalid. Fix: **copy-and-swap idiom**. |
+| 8 | Exit message | `Dynamic_Array.cpp` says `Array App` instead of `Dynamic Array App`. |
 
-### 💡 أفكار للتطوير
+### Ideas for improvement
 
-- `std::vector` هو النسخة الجاهزة من الـ Dynamic Array (بيستخدم نفس الفكرة بالظبط) — مفيد تقارن بيه كودك.
-- تحويل الـ class لـ **template** (`template <typename T>`) عشان يشتغل مع `double` و `string` مش `int` بس.
-- إضافة `operator[]` عشان تكتب `arr[2]` بدل `arr.get(2, x)`.
-- إضافة `shrink_to_fit()` للـ Dynamic لما الـ array تبقى كبيرة وفاضية أغلبها.
-- إضافة Unit Tests (مثلاً بـ Catch2 أو GoogleTest).
+- Compare with `std::vector`, the standard library's dynamic array.
+- Turn the class into a **template** (`template <typename T>`) to support `double` and `string`.
+- Add `operator[]` so you can write `arr[2]` instead of `arr.get(2, x)`.
+- Add `shrink_to_fit()` to the Dynamic version.
+- Add unit tests (Catch2 or GoogleTest).
+
+---
+
+## 14. Final Comparisons
+
+`n` = number of elements in the array, `m` = number of elements in the second array.
+
+### 14.1 Static vs Dynamic vs `std::vector`
+
+| Criterion | Static Array | Dynamic Array | `std::vector<int>` |
+|---|---|---|---|
+| Capacity | Fixed after creation (except set operations) | Doubles automatically | Grows automatically |
+| When full | `append` returns `0` | Calls `resize` | Reallocates automatically |
+| Minimum capacity | `0` | `1` | `0` |
+| `append` | O(1) | O(1) amortized, O(n) at resize | O(1) amortized |
+| Memory use | Exactly what was allocated | Up to about 2× the element count | Similar to Dynamic |
+| Memory safety | Manual Rule of Three | Manual Rule of Three | Automatic (RAII) |
+| Best for | Size known in advance | Size unknown | Real-world projects |
+
+### 14.2 `linear_search` vs `binary_search`
+
+| Criterion | Linear Search | Binary Search |
+|---|---|---|
+| Sorted input required | No | **Yes**, ascending |
+| Time | O(n) | O(log n) |
+| Best case | O(1) (first element) | O(1) (middle element) |
+| 1,000,000 elements | up to 1,000,000 comparisons | about 20 comparisons |
+| Unsorted input | Works correctly | **Wrong result, no warning** |
+
+### 14.3 The four set operations (`A = [1,3,5,7,9]`, `B = [3,4,5,6,7]`)
+
+| Operation | Result | Keeps duplicates? | Result capacity (Static) | Result capacity (Dynamic) | Time |
+|---|---|:-:|---|---|:-:|
+| `merge` | `1 3 3 4 5 5 6 7 7 9` | Yes | `size + arr2.size` | `length + arr2.length` | O(n + m) |
+| `union_array` | `1 3 4 5 6 7 9` | No | `size + arr2.size` | `length + arr2.length` | O(n + m) |
+| `intersection` | `3 5 7` | No | `min(size, arr2.size)` | `min(size, arr2.size)` | O(n + m) |
+| `difference` (A − B) | `1 9` | No | unchanged `size` | unchanged `size` | O(n + m) |
+
+### 14.4 Complete Big-O table
+
+| Operation | Static | Dynamic | Animation |
+|---|:-:|:-:|---|
+| `get` / `set` | O(1) | O(1) | [get_set](animations/array_get_set.gif) |
+| `append` | O(1) | O(1) amortized, O(n) at resize | [static](animations/array_append_static.gif) / [dynamic](animations/array_append_dynamic.gif) |
+| `insert` | O(n) | O(n) | [insert](animations/array_insert.gif) |
+| `insert_sorted` | O(n) | O(n) | [insert_sorted](animations/array_insert_sorted.gif) |
+| `delete_index` | O(n) | O(n) | [delete](animations/array_delete.gif) |
+| `linear_search` | O(n) | O(n) | [linear](animations/array_linear_search.gif) |
+| `binary_search` | O(log n) | O(log n) | [binary](animations/array_binary_search.gif) |
+| `max` / `min` / `sum` / `average` | O(n) | O(n) | [max_sum](animations/array_max_sum.gif) |
+| `reverse` | O(n) | O(n) | [reverse](animations/array_reverse.gif) |
+| `is_sorted` | O(n) | O(n) | [is_sorted](animations/array_is_sorted.gif) |
+| `rearrange` | O(n) | O(n) | [rearrange](animations/array_rearrange.gif) |
+| `merge` / `union` / `intersection` / `difference` | O(n + m) | O(n + m) | [merge](animations/array_merge.gif) / [union](animations/array_union.gif) / [intersection](animations/array_intersection.gif) / [difference](animations/array_difference.gif) |
+| `display` | O(n) | O(n) | - |
+| Copy Constructor / Assignment | O(n) | O(n) | [deep_copy](animations/array_deep_copy.gif) |
