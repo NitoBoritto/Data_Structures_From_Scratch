@@ -1,5 +1,32 @@
 # Trees
 
+**English:** Compare a binary tree, a binary search tree, and a self-
+balancing AVL tree. **بالعربي:** قارن بين الشجرة الثنائية وBST وشجرة AVL
+ذاتية التوازن.
+
+## Animated walkthrough | شرح متحرك
+
+![AVL rotation animation | دوران AVL](../animations/tree.gif)
+
+Inserting 10, 20, 30 creates a right-right imbalance; a left rotation repairs
+it. إضافة القيم بتعمل عدم توازن ناحية اليمين؛ الدوران لليسار بيصلحه.
+
+## Read the source step by step | اقرأ الكود بالترتيب
+
+1. Binary Tree defines parent/child relationships but not key ordering.
+   الشجرة الثنائية بتحدد علاقة الأب والأبناء، مش ترتيب القيم.
+2. BST sends smaller keys left and larger keys right. BST بتحط الأصغر شمال
+   والأكبر يمين.
+3. Inorder traversal of a BST visits keys in ascending order. `Inorder`
+   بتعرض قيم BST تصاعدياً.
+4. AVL tracks subtree heights and rotates after an imbalance. AVL بتتابع
+   ارتفاع الفروع وبتدور بعد اختلال التوازن.
+5. A full traversal still costs `O(n)` because it visits every node. المرور
+   الكامل تكلفته `O(n)` لأنه بيزور كل العقد.
+
+**Try / جرّب:** Insert 10, 20, 30 in BST and AVL; compare tree shapes, then
+search for 30. أضف القيم في BST وAVL وقارن الشكل، وبعدها ابحث عن 30.
+
 تطبيقات أشجار ثنائية عامة، وشجرة بحث ثنائية، وشجرة AVL ذاتية التوازن.
 
 ## الملفات

@@ -1,6 +1,30 @@
 # 📚 Array Data Structure في C++
 ## Static Array  vs  Dynamic Array
 
+**English:** This guide explains two array implementations, their memory
+layout, common operations, search methods, set operations, and their costs.
+**بالعربي:** الدليل بيشرح نسختين من الـ Array، شكل الذاكرة، العمليات، طرق
+البحث، عمليات المجموعات، والتعقيد.
+
+## Real animated walkthrough | Animation متحركة فعلية
+
+![Animated array insertion | إدراج في Array خطوة بخطوة](../animations/array.gif)
+
+The GIF shows `insert(1, 15)` on `[10, 20, 30]`. The program shifts elements
+right from the end so it does not overwrite a value that still needs moving.
+الـ GIF بتعرض إدراج 15 عند الفهرس 1 في `[10, 20, 30]`. بنزحزح من الآخر لليمين
+عشان ما نمسحش قيمة لسه محتاجين ننقلها.
+
+**Follow the four animation frames / تابع إطارات الحركة الأربعة:**
+
+1. **Start:** three used elements and one free slot. البداية: 3 عناصر وخانة
+   فاضية.
+2. **Open a slot:** copy 30 into the next position. افتح مكان بنسخ 30 للخانة
+   التالية.
+3. **Shift:** copy 20 one step right. حرّك 20 خطوة لليمين.
+4. **Insert:** write 15 at index 1 and increase `length`. اكتب 15 في الفهرس 1
+   وبعدها زوّد `length`.
+
 مشروع بيشرح ويطبّق **الـ Array كـ Data Structure** في C++ بنسختين:
 
 | الملف | الـ Class | الفكرة |
@@ -31,9 +55,10 @@
 
 ---
 
-## 🎬 دليل رموز الأنيميشن
+## 📖 دليل رموز الرسوم خطوة بخطوة
 
-كل "أنيميشن" في الملف ده عبارة عن **Frames** (لقطات) بتتابعها من فوق لتحت، كأنك بتشوف الكود وهو شغال خطوة خطوة.
+الرسوم النصية التالية **خطوات ثابتة توضيحية** وليست GIF. للأنيميشن المتحركة
+الحقيقية شغّل الصورة أعلاه؛ كل إطار فيها بيتغير تلقائياً.
 
 | الرمز | المعنى |
 |:-:|---|
@@ -64,7 +89,8 @@ Array-Project/
 
 ## 2. التشغيل
 
-محتاج compiler بيدعم C++11 أو أحدث (مثلاً g++ أو clang++ أو MSVC).
+Requires a compiler with C++17 support, such as GCC, Clang, or MSVC.
+محتاج Compiler بيدعم C++17 أو أحدث، زي GCC أو Clang أو MSVC.
 
 ```bash
 # النسخة الثابتة

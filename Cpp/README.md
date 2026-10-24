@@ -1,10 +1,16 @@
 # Data Structures From Scratch - C++
 
-مجموعة تطبيقات تعليمية لهياكل البيانات والخوارزميات بلغة C++. كل ملف `.cpp`
-برنامج مستقل يحتوي على `main()` وقائمة تفاعلية خاصة به؛ شغّل ملفاً واحداً في كل
-مرة، ولا تجمع كل الملفات في أمر ترجمة واحد.
+**English:** This repository is a set of standalone, interactive C++17 programs
+that implement data structures and algorithms from scratch. Each `.cpp` file
+has its own `main()` function: compile and run one source file at a time.
 
-> النطاق هنا هو مجلد C++ فقط. ملفات Python خارج نطاق هذا الدليل والتغييرات.
+**العربية:** المشروع مجموعة برامج تفاعلية مستقلة بلغة C++17 لشرح هياكل البيانات
+والخوارزميات وتنفيذها من الصفر. كل ملف `.cpp` فيه `main()` خاص به؛ ترجم وشغّل
+ملفاً واحداً في كل مرة، ولا تجمع الملفات كلها في برنامج واحد.
+
+> **Scope / النطاق:** This guide covers the `Cpp` directory only. It does not
+> document or modify the Python examples. / الدليل ده خاص بمجلد `Cpp` فقط،
+> ومش بيشرح أو يغيّر أمثلة Python.
 
 ## المحتويات
 
@@ -31,6 +37,9 @@
 | [Tree](./Tree/README.md) | Binary Tree وBST وAVL | ثلاثة ملفات |
 | [Trie](./Trie/README.md) | تخزين الكلمات والبحث بالبادئة | `Trie.cpp` |
 
+**Project tools / أدوات المشروع:** [Animated GIF index](./animations/README.md)
+| [VS Code build and debug guide](./.vscode/README.md)
+
 ## المتطلبات والتشغيل
 
 - مترجم C++ يدعم C++17، مثل GCC أو Clang أو MSVC.
@@ -51,17 +60,42 @@ g++ -std=c++17 -Wall -Wextra .\Graph\Graph.cpp -o .\Graph\Graph.exe
 
 ## كيف تقرأ الشروح المتحركة؟
 
-كل رسم متتابع هو لقطة لحالة البنية بعد خطوة من الخوارزمية. تابع المؤشرات أو
-العقد التي تغيّر موضعها، ثم راقب كيف تصبح الحالة النهائية:
+**These are real animated GIF files**, not text diagrams. Each animation
+repeats a small example one algorithm step at a time. Watch the highlighted
+step and data state; the folder README explains what changed and why.
+**دي ملفات GIF متحركة بالفعل**، مش رسومات نصية. كل Animation بتكرر مثال صغير
+خطوة بخطوة. تابع رقم الخطوة وحالة البيانات، وبعدها اقرأ شرح المجلد لمعرفة
+إيه اللي اتغير وليه.
 
-```text
-قبل:       [10] -> [20] -> [30] -> nullptr
-إضافة 25:  [10] -> [20] -> [30] -> [25] -> nullptr
-                         ^ ربط العقدة الجديدة بنهاية القائمة
-```
+![Animated walkthrough: graph BFS](./animations/graph.gif)
 
-الرسوم توضيحية لقيم صغيرة وليست نوافذ رسومية متحركة داخل البرنامج. ملفات C++
-تعرض الحالة والنتائج من خلال قوائم الطرفية.
+| Animation | Animated topic |
+|---|---|
+| [Array](./animations/array.gif) | Insert by shifting elements |
+| [Balanced tree](./animations/balanced-tree.gif) | Treap rotation |
+| [Bitset](./animations/bitset.gif) | Set and flip bits |
+| [B-Tree](./animations/btree.gif) | Split a full node |
+| [Cache](./animations/cache.gif) | LRU access and eviction |
+| [Circular buffer](./animations/circular-buffer.gif) | Wrap the write index |
+| [Disjoint set](./animations/disjoint-set.gif) | Find, path compression, and union |
+| [Graph](./animations/graph.gif) | BFS queue and visit order |
+| [Hash table](./animations/hashtable.gif) | Resolve a collision by chaining |
+| [Heap](./animations/heap.gif) | Min-heap sift-up |
+| [Interval tree](./animations/interval-tree.gif) | Prune an impossible subtree |
+| [Linked list](./animations/linked-list.gif) | Insert a node by reconnecting links |
+| [Probabilistic](./animations/probabilistic.gif) | Bloom Filter bit updates |
+| [Queue](./animations/queue.gif) | FIFO enqueue and dequeue |
+| [Range query](./animations/range-query.gif) | Fenwick point update |
+| [Skip list](./animations/skip-list.gif) | Move across search levels |
+| [Stack](./animations/stack.gif) | Push and pop (LIFO) |
+| [Text](./animations/text.gif) | Sort the suffixes of “banana” |
+| [Tree](./animations/tree.gif) | AVL rotation |
+| [Trie](./animations/trie.gif) | Shared prefix and word endings |
+
+**Note / ملاحظة:** The GIFs are illustrative walkthroughs of small examples;
+they do not execute or capture the C++ programs. The programs themselves show
+their output in the terminal. / ملفات GIF بتشرح أمثلة صغيرة للتوضيح، ومش
+بتشغّل أو بتسجّل برامج C++ نفسها. ناتج البرامج بيظهر في الـ Terminal.
 
 ## مصطلحات وتعقيد
 
@@ -77,6 +111,26 @@ g++ -std=c++17 -Wall -Wextra .\Graph\Graph.cpp -o .\Graph\Graph.exe
 بعض التطبيقات تدير الذاكرة يدوياً باستخدام مؤشرات، وتعرّف destructor وعمليات
 نسخ عميق لتفادي مشاركة الذاكرة المملوكة بين نسختين. لا تفترض أن كل ملف يشترك في
 تنفيذ أو واجهة موحدة؛ كل برنامج مثال مستقل بواجهته الخاصة.
+
+**How to learn / إزاي تبدأ التعلّم؟**
+
+1. Read the folder README first, then open the listed `.cpp` file beside it.
+   / اقرأ README المجلد الأول، وبعدها افتح ملف `.cpp` المذكور جنبه.
+2. Find the class and its member data; identify what each node, index, pointer,
+   or counter represents. / دور على الـ class والبيانات اللي جواه، وافهم كل
+   Node أو index أو pointer أو counter بيمثل إيه.
+3. Trace one operation manually using the GIF. Match every animation step to
+   the corresponding method in the source. / تابع عملية واحدة على الورق
+   باستخدام الـ GIF، واربط كل خطوة بالـ method المنفذة لها في الكود.
+4. Run the program, choose the same operation from its menu, then test an
+   empty, typical, and boundary case. / شغّل البرنامج واختار نفس العملية من
+   القائمة، وجرّب حالة فاضية وعادية وحالة على الحدود.
+
+**Glossary / مصطلحات:** A *node* (`عقدة`) stores a value and links or metadata.
+*Capacity* (`السعة`) is available storage; *length/size* (`عدد العناصر`) is
+the number currently stored. A *traversal* (`اجتياز`) visits elements in an
+order. An *invariant* (`خاصية ثابتة`) is a rule the structure must preserve
+after each operation, such as sorted keys or heap order.
 
 ## التحقق
 

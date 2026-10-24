@@ -1,5 +1,31 @@
 # Queues and Deque
 
+**English:** A queue is FIFO; a deque supports operations at both ends.
+**بالعربي:** الـ Queue أول داخل أول خارج، والـ Deque بتدعم التعامل من الطرفين.
+
+## Animated walkthrough | شرح متحرك
+
+![FIFO animation | حركة الطابور](../animations/queue.gif)
+
+A enters first and leaves first; new D joins at the back. A يدخل الأول ويخرج
+الأول، والعنصر D الجديد يدخل من الخلف.
+
+## Read the source step by step | اقرأ الكود بالترتيب
+
+1. Enqueue at the back; dequeue from the front. `enqueue` بتضيف من الخلف
+   و`dequeue` بتحذف من الأمام.
+2. Static Queue has fixed capacity; Dynamic Queue grows when needed.
+   الثابت سعته محدودة؛ والديناميكي بيكبر وقت الحاجة.
+3. Linked Queue allocates nodes; a circular array reuses slots. القائمة
+   المرتبطة بتضيف عقد؛ والمصفوفة الدائرية بتعيد استخدام الخانات.
+4. Deque supports both ends and includes a palindrome example. الـ Deque
+   بتدعم الطرفين وفيها مثال لفحص Palindrome.
+5. Check empty/full before removing or adding. اتأكد من حالة الفراغ أو
+   الامتلاء قبل الحذف أو الإضافة.
+
+**Practice / تدريب:** Enqueue A, B, C; dequeue once; enqueue D. FIFO order is
+now B, C, D. أضف A وB وC، احذف مرة، وأضف D؛ الترتيب يبقى B ثم C ثم D.
+
 ## الملفات
 
 - `Static_Queue.cpp` — Queue بسعة ثابتة.

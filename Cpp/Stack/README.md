@@ -1,5 +1,28 @@
 # Stacks
 
+**English:** A stack follows LIFO: the newest value is removed first.
+**بالعربي:** الـ Stack بتطبق LIFO: آخر عنصر يدخل هو أول عنصر يخرج.
+
+## Animated walkthrough | شرح متحرك
+
+![Stack animation | حركة Push وPop](../animations/stack.gif)
+
+Every push becomes the top item; pop removes that item. كل `push` بتحط
+العنصر الجديد فوق، و`pop` بتحذف العنصر الموجود فوق.
+
+## Read the source step by step | اقرأ الكود بالترتيب
+
+1. Add and remove items from the top only. ضيف واحذف من فوق فقط.
+2. `push` places a value there; `pop` returns and removes it. `push` بتضيف
+   و`pop` بترجع القيمة وبتحذفها.
+3. Static, dynamic, and linked stacks differ in storage, not LIFO behavior.
+   الأنواع بتختلف في التخزين مش في مبدأ LIFO.
+4. Example applications include bracket checking, text reversal, and
+   decimal-to-binary conversion. التطبيقات تشمل فحص الأقواس وعكس النص
+   والتحويل من عشري لثنائي.
+5. Handle an empty pop (underflow) and a full static stack. اتعامل مع الحذف
+   من Stack فاضية ومع امتلاء النسخة الثابتة.
+
 ثلاثة تطبيقات لمبدأ LIFO: آخر عنصر يدخل هو أول عنصر يخرج.
 
 ## الملفات

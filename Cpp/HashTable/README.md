@@ -1,5 +1,32 @@
 # Hash Tables
 
+**English:** A hash function maps a key to a candidate slot; collisions need
+a deliberate resolution strategy. **بالعربي:** دالة التجزئة بتحوّل المفتاح
+لمكان مقترح، والتصادم محتاج طريقة معالجة صحيحة.
+
+## Animated walkthrough | شرح متحرك
+
+![Hash collision animation | حركة معالجة التصادم](../animations/hashtable.gif)
+
+The GIF shows chaining: two keys map to bucket 2 and are linked there.
+الـ GIF بتعرض Chaining: مفتاحين اتحولوا للخانة 2 واتربطوا فيها.
+
+## Read the source step by step | اقرأ الكود بالترتيب
+
+1. Compute a candidate slot from the key. احسب الخانة المقترحة للمفتاح.
+2. Chaining stores colliding entries together; open addressing probes other
+   slots and marks deleted slots with tombstones. Chaining بتجمع المتصادمين،
+   أما Open Addressing بتفحص خانات تانية وبتعلّم الخانة المحذوفة بـ tombstone.
+3. Cuckoo hashing has two candidate positions and may relocate an existing
+   key. Cuckoo عندها مكانين محتملين وممكن تزحزح مفتاح موجود.
+4. Rehashing allocates a differently sized table and reinserts entries,
+   because capacity changes their candidate positions. إعادة التجزئة بتبني
+   جدول بسعة مختلفة وبتعيد إدخال العناصر عشان أماكنها بتتغير.
+
+**Important / مهم:** A collision is not lost data; lookup must still compare
+keys and find the exact requested entry. التصادم مش فقدان بيانات؛ البحث لازم
+يفحص المفاتيح ويلاقي الإدخال المطلوب بالضبط.
+
 ثلاثة تطبيقات لتخزين أزواج المفتاح والقيمة والوصول إليها عبر دالة تجزئة.
 
 ## الملفات

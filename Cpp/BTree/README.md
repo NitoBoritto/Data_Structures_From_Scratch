@@ -1,5 +1,35 @@
 # B-Tree وB+ Tree
 
+**English:** Learn how multi-key nodes split, borrow, and merge while keeping
+tree height balanced. **بالعربي:** هنا هتفهم إزاي العقد اللي فيها مفاتيح كتير
+بتتقسم أو تستعير أو تندمج عشان ارتفاع الشجرة يفضل متوازن.
+
+## Animated walkthrough | شرح متحرك
+
+![B-Tree split animation | تقسيم عقدة B-Tree](../animations/btree.gif)
+
+The GIF shows a full node split and its median promoted to the parent. الـ GIF
+بتوضح تقسيم عقدة ممتلئة ورفع المفتاح الأوسط للأب. الحد الفعلي للمفاتيح بيتحدد
+حسب minimum degree المستخدم في البرنامج.
+
+## Read the source step by step | اقرأ الكود بالترتيب
+
+1. Find where each node stores sorted keys and child pointers. حدّد مكان
+   مصفوفة المفاتيح المرتبة ومؤشرات الأبناء داخل العقدة.
+2. Insertion follows the child whose key range contains the new value.
+   الإضافة بتتبع الابن اللي مجال قيمه مناسب للمفتاح الجديد.
+3. A full child splits; the median moves up and separates the children's
+   ranges. الابن الممتلئ بيتقسم، والوسيط بيطلع للأب ويفصل مجالات القيم.
+4. Deletion may borrow a key from a sibling or merge nodes. الحذف ممكن
+   يستعير مفتاح من أخ أو يدمج عقد عشان يحافظ على الحد الأدنى للمفاتيح.
+5. B+ Tree links its leaves, making sorted scans across leaf values direct.
+   أوراق B+ Tree مترابطة، وده بيخلّي المرور على القيم المرتبة متتابعاً.
+
+**When useful / الاستخدام:** A node holds several keys, keeping the tree
+shallow. This makes multiway trees useful for learning file and database
+indexes. العقدة الواحدة بتحتفظ بعدة مفاتيح، فعدد المستويات بيقل؛ وده مفيد لفهم
+فهارس الملفات وقواعد البيانات.
+
 تخزّن البنيتان أكثر من مفتاح في العقدة الواحدة؛ وهذا يقلل عدد مستويات الشجرة
 ويجعلها مناسبة لفهم فهارس البيانات والقرص.
 

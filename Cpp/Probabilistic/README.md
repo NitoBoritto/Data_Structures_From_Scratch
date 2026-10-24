@@ -1,5 +1,33 @@
 # Probabilistic Data Structures
 
+**English:** Bloom filters use compact bit storage for fast approximate
+membership checks. **بالعربي:** Bloom Filter بتستخدم بتات قليلة عشان تختبر
+وجود عنصر بسرعة وبشكل احتمالي.
+
+## Animated walkthrough | شرح متحرك
+
+![Bloom-filter animation | حركة Bloom Filter](../animations/probabilistic.gif)
+
+Each hash function selects a bit; adding a key turns the selected bits on.
+كل دالة تجزئة بتختار بت، وإضافة المفتاح بتضبط البتات دي.
+
+## Read the source step by step | اقرأ الكود بالترتيب
+
+1. Add a key by hashing it to multiple bit positions. الإضافة بتحول المفتاح
+   لعدة أماكن بتات.
+2. Any zero bit means definitely absent; all selected bits set means possibly
+   present. لو أي بت صفر يبقى غائب بالتأكيد؛ لو كلهم واحد ممكن يكون موجود.
+3. Different keys can share bits, causing a false positive. مفاتيح مختلفة
+   ممكن تشترك في نفس البتات وتعمل إيجابية كاذبة.
+4. Counting Bloom Filter uses counters to support removal. نسخة العدادات
+   بتسمح بالحذف.
+5. Removing a key that was never added may decrement counters shared by other
+   keys. حذف مفتاح مش متضاف ممكن يقلل عدادات مستخدمة لمفاتيح تانية.
+
+**Use case / الاستخدام:** Treat a positive answer as a hint and confirm it in
+an exact store when correctness matters. اعتبر النتيجة الإيجابية احتمال،
+وأكّدها من مخزن دقيق لو صحة القرار مهمة.
+
 ## الملفات
 
 - `Bloom_Filter.cpp` — بنية احتمالية موفرة للمساحة لاختبار الانتماء.

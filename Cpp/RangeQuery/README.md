@@ -1,5 +1,32 @@
 # Range Queries
 
+**English:** Answer subarray questions without scanning every value for
+every query. **بالعربي:** جاوب عن استعلامات نطاق من غير فحص كل العناصر كل مرة.
+
+## Animated walkthrough | شرح متحرك
+
+![Fenwick update animation | تحديث Fenwick](../animations/range-query.gif)
+
+Increase array index 2, then combine stored partial sums for a prefix query.
+زوّد قيمة الفهرس 2، وبعدها اجمع المجاميع الجزئية للإجابة عن استعلام بادئة.
+
+## Read the source step by step | اقرأ الكود بالترتيب
+
+1. Fenwick stores partial sums; a point update touches logarithmically many
+   cells. Fenwick بتخزن مجاميع جزئية وتحديث نقطة بيغير خانات قليلة.
+2. Segment Tree combines child summaries for a range query. Segment Tree
+   بتجمع ملخصات الأبناء للإجابة عن نطاق.
+3. Sparse Table precomputes power-of-two ranges and suits unchanged data.
+   Sparse Table بتحسب نطاقات مسبقاً ومناسبة للبيانات اللي مش بتتغير.
+4. This Sparse Table returns minimum, maximum, and GCD together. الاستعلام
+   بيرجع أقل وأكبر قيمة وGCD معاً.
+5. Check zero-based indices and inclusive `[left,right]` bounds. راجع إن
+   الفهرسة تبدأ من صفر وإن الطرفين داخل النطاق.
+
+**Choose / الاختيار:** Frequent updates favor Fenwick/Segment Tree; many
+queries on static data favor Sparse Table. التحديث المتكرر يناسب Fenwick أو
+Segment Tree، والاستعلامات على بيانات ثابتة تناسب Sparse Table.
+
 ثلاث طرق لتخزين قيم مصفوفة والإجابة عن استعلامات نطاق. الفهارس في الشروح
 والاستعلامات تبدأ من الصفر؛ تحقق من حدود `[left, right]` التي يطلبها البرنامج.
 
